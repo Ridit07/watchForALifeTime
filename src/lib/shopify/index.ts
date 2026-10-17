@@ -31,21 +31,44 @@ const hydrate = (p: RawProduct): Product => ({
   variants: flatten(p.variants),
 });
 
-export async function getProducts({
-  first = 24,
-  sortKey = "BEST_SELLING",
-  reverse = false,
-  query,
-}: {
+/**
+ * `DISABLE_CACHE=1` in development sends catalogue reads straight to
+ * Shopify, so a stock edit in the admin shows on the next page load.
+ *
+ * `"use cache"` is a static directive and cannot be switched off at
+ * runtime, so each read is written twice — the real fetch, and a cached
+ * wrapper around it — with a dispatcher choosing between them. NODE_ENV is
+ * readable here because this runs per request, unlike next.config.ts.
+ */
+const FRESH =
+  process.env.DISABLE_CACHE === "1" && process.env.NODE_ENV !== "production";
+
+type ProductsArgs = {
   first?: number;
   sortKey?: string;
   reverse?: boolean;
   query?: string;
-} = {}): Promise<Product[]> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("products");
+};
 
+export async function getProducts(
+  args: ProductsArgs = {},
+): Promise<Product[]> {
+  return FRESH ? fetchProducts(args) : fetchProductsCached(args);
+}
+
+async function fetchProductsCached(args: ProductsArgs): Promise<Product[]> {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("products");
+  return fetchProducts(args);
+}
+
+async function fetchProducts({
+  first = 24,
+  sortKey = "BEST_SELLING",
+  reverse = false,
+  query,
+}: ProductsArgs): Promise<Product[]> {
   const data = await shopifyFetch<{ products: Connection<RawProduct> }>({
     query: /* GraphQL */ `
       query Products(
@@ -77,10 +100,17 @@ export async function getProducts({
  * cheaply and reduces. Cached alongside the catalogue.
  */
 export async function getVendors(): Promise<string[]> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("products");
+  return FRESH ? fetchVendors() : fetchVendorsCached();
+}
 
+async function fetchVendorsCached(): Promise<string[]> {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("products");
+  return fetchVendors();
+}
+
+async function fetchVendors(): Promise<string[]> {
   const data = await shopifyFetch<{
     products: Connection<{ vendor: string }>;
   }>({
@@ -103,10 +133,17 @@ export async function getVendors(): Promise<string[]> {
 }
 
 export async function getProduct(handle: string): Promise<Product | null> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("products", `product:${handle}`);
+  return FRESH ? fetchProduct(handle) : fetchProductCached(handle);
+}
 
+async function fetchProductCached(handle: string): Promise<Product | null> {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("products", `product:${handle}`);
+  return fetchProduct(handle);
+}
+
+async function fetchProduct(handle: string): Promise<Product | null> {
   const data = await shopifyFetch<{ product: RawProduct | null }>({
     query: /* GraphQL */ `
       query Product($handle: String!) {
@@ -122,7 +159,7 @@ export async function getProduct(handle: string): Promise<Product | null> {
 
 export async function getProductHandles(): Promise<string[]> {
   "use cache";
-  cacheLife("hours");
+  cacheLife("catalog");
   cacheTag("products");
 
   const data = await shopifyFetch<{
@@ -137,10 +174,17 @@ export async function getProductHandles(): Promise<string[]> {
 }
 
 export async function getCollections(): Promise<Collection[]> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("collections");
+  return FRESH ? fetchCollections() : fetchCollectionsCached();
+}
 
+async function fetchCollectionsCached(): Promise<Collection[]> {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("collections");
+  return fetchCollections();
+}
+
+async function fetchCollections(): Promise<Collection[]> {
   const data = await shopifyFetch<{ collections: Connection<Collection> }>({
     query: /* GraphQL */ `
       query Collections {
@@ -165,13 +209,26 @@ export async function getCollections(): Promise<Collection[]> {
   return flatten(data.collections).filter((c) => c.handle !== "frontpage");
 }
 
-export async function getCollection(handle: string): Promise<
-  (Collection & { products: Product[] }) | null
-> {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("collections", "products", `collection:${handle}`);
+type CollectionWithProducts = (Collection & { products: Product[] }) | null;
 
+export async function getCollection(
+  handle: string,
+): Promise<CollectionWithProducts> {
+  return FRESH ? fetchCollection(handle) : fetchCollectionCached(handle);
+}
+
+async function fetchCollectionCached(
+  handle: string,
+): Promise<CollectionWithProducts> {
+  "use cache";
+  cacheLife("catalog");
+  cacheTag("collections", "products", `collection:${handle}`);
+  return fetchCollection(handle);
+}
+
+async function fetchCollection(
+  handle: string,
+): Promise<CollectionWithProducts> {
   const data = await shopifyFetch<{
     collection:
       | (Collection & { products: Connection<RawProduct> })
@@ -216,7 +273,7 @@ export type ShopInfo = {
 
 export async function getShop(): Promise<ShopInfo> {
   "use cache";
-  cacheLife("days");
+  cacheLife("content");
   cacheTag("shop");
 
   const data = await shopifyFetch<{ shop: ShopInfo }>({
@@ -237,7 +294,7 @@ export async function getShop(): Promise<ShopInfo> {
 
 export async function getPolicies(): Promise<Record<string, ShopPolicy>> {
   "use cache";
-  cacheLife("days");
+  cacheLife("content");
   cacheTag("shop");
 
   const data = await shopifyFetch<{
@@ -260,7 +317,7 @@ export async function getPolicies(): Promise<Record<string, ShopPolicy>> {
 
 export async function getPageHandles(): Promise<string[]> {
   "use cache";
-  cacheLife("days");
+  cacheLife("content");
   cacheTag("pages");
 
   const data = await shopifyFetch<{ pages: Connection<{ handle: string }> }>({
@@ -274,7 +331,7 @@ export async function getPageHandles(): Promise<string[]> {
 
 export async function getPage(handle: string): Promise<Page | null> {
   "use cache";
-  cacheLife("days");
+  cacheLife("content");
   cacheTag("pages");
 
   const data = await shopifyFetch<{ page: Page | null }>({

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { cacheLife } from "next/cache";
 import { getCollections, getPolicies } from "@/lib/shopify";
 import { shippingLine, site } from "@/lib/site";
@@ -24,7 +25,12 @@ async function CopyrightYear() {
   return <>{new Date().getFullYear()}</>;
 }
 
-export async function Footer() {
+/**
+ * Shop and Support columns stream in. They read Shopify, and with
+ * `DISABLE_CACHE=1` that read is uncached — which cannot be prerendered
+ * unless it sits behind a boundary like this one.
+ */
+async function FooterLinks() {
   const [collections, policies] = await Promise.all([
     getCollections(),
     getPolicies(),
@@ -37,20 +43,8 @@ export async function Footer() {
   });
 
   return (
-    <footer className="mt-24 bg-ink text-sand-200 print:hidden">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <div className="grid gap-12 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <p className="font-display text-2xl text-sand-50">{site.name}</p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-light">
-              {site.heritage}
-            </p>
-            <p className="mt-5 text-xs leading-relaxed text-brass-light">
-              {shippingLine}
-            </p>
-          </div>
-
-          <div>
+    <>
+      <div>
             <h2 className="text-[11px] font-medium tracking-[0.2em] text-brass-light uppercase">
               Shop
             </h2>
@@ -106,7 +100,36 @@ export async function Footer() {
                 </li>
               ))}
             </ul>
+      </div>
+    </>
+  );
+}
+
+export function Footer() {
+  return (
+    <footer className="mt-24 bg-ink text-sand-200 print:hidden">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
+        <div className="grid gap-12 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <p className="font-display text-2xl text-sand-50">{site.name}</p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-light">
+              {site.heritage}
+            </p>
+            <p className="mt-5 text-xs leading-relaxed text-brass-light">
+              {shippingLine}
+            </p>
           </div>
+
+          <Suspense
+            fallback={
+              <>
+                <div className="h-40 animate-pulse bg-white/5" />
+                <div className="h-40 animate-pulse bg-white/5" />
+              </>
+            }
+          >
+            <FooterLinks />
+          </Suspense>
         </div>
 
         <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-muted-light sm:flex-row sm:items-center sm:justify-between">
