@@ -3,17 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import type { Collection } from "@/lib/shopify/types";
-import { titleCase } from "@/lib/utils";
+import { navLinks, site } from "@/lib/site";
 import { MenuIcon, CloseIcon } from "./icons";
 
-export function MobileNav({
-  collections,
-  signedIn,
-}: {
-  collections: Collection[];
-  signedIn: boolean;
-}) {
+export function MobileNav({ signedIn }: { signedIn: boolean }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const [lastPath, setLastPath] = useState(pathname);
@@ -74,18 +67,19 @@ export function MobileNav({
             </div>
 
             <nav className="mt-8 flex flex-col gap-1">
-              <Link href="/collections/all" className="mobile-link">
-                All Watches
-              </Link>
-              {collections.map((c) => (
-                <Link
-                  key={c.handle}
-                  href={`/collections/${c.handle}`}
-                  className="mobile-link"
-                >
-                  {titleCase(c.title)}
+              {navLinks.map((l) => (
+                <Link key={l.href} href={l.href} className="mobile-link">
+                  {l.label}
                 </Link>
               ))}
+              <a
+                href={site.payUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mobile-link text-brass-light"
+              >
+                Pay Here
+              </a>
               <Link href="/about" className="mobile-link">
                 Our Story
               </Link>

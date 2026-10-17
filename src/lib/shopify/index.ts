@@ -71,6 +71,37 @@ export async function getProducts({
   return flatten(data.products).map(hydrate);
 }
 
+/**
+ * Distinct vendors across the catalogue, for the brand filter. Shopify has
+ * no "list all vendors" query on the Storefront API, so this reads handles
+ * cheaply and reduces. Cached alongside the catalogue.
+ */
+export async function getVendors(): Promise<string[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products");
+
+  const data = await shopifyFetch<{
+    products: Connection<{ vendor: string }>;
+  }>({
+    query: /* GraphQL */ `
+      query Vendors {
+        products(first: 250) {
+          edges { node { vendor } }
+        }
+      }
+    `,
+  });
+
+  const seen = new Set(
+    flatten(data.products)
+      .map((p) => p.vendor)
+      .filter(Boolean),
+  );
+
+  return [...seen].sort((a, b) => a.localeCompare(b));
+}
+
 export async function getProduct(handle: string): Promise<Product | null> {
   "use cache";
   cacheLife("hours");

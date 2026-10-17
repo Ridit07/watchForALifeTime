@@ -60,7 +60,7 @@ export function Hero({ product }: { product: Product | null }) {
             </div>
             <div className="mt-2 text-center md:text-left">
               <p className="text-[11px] tracking-[0.2em] text-brass-light uppercase">
-                {titleCase(product.vendor)} · Featured
+                {titleCase(product.vendor)} · Best seller
               </p>
               <p className="mt-2 font-display text-lg text-sand-50">
                 {product.title}

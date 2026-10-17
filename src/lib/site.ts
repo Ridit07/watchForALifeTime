@@ -12,7 +12,23 @@ export const site = {
     "Life Time, established as one of Gurgaon's earliest watch showrooms by Mr. Naresh Chand Jain, offers an extensive collection of watches and clocks for every taste.",
   description:
     "One of Gurgaon's earliest watch showrooms. An extensive collection of watches and clocks, chosen for a lifetime of wear.",
+
+  /* Cashfree-hosted payment page. Opens in a new tab — it is a separate
+     service, and we do not want to lose the visitor's place in the shop. */
+  payUrl: "https://payments.cashfree.com/forms/watchforalifetime",
+
+  /* Where the contact form posts. Formspree keeps the recipient address on
+     their side; the form id lives in the environment. */
+  formspreeId: process.env.NEXT_PUBLIC_FORMSPREE_ID || "",
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
 } as const;
+
+/** Header and footer navigation, in order. */
+export const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/collections/all", label: "All Watches" },
+  { href: "/pages/contact", label: "Contact" },
+] as const;
 
 export const assurances = [
   {
@@ -20,18 +36,22 @@ export const assurances = [
     body: "Every piece sourced directly from the brand, with full manufacturer warranty.",
   },
   {
-    title: "Free Shipping",
-    body: "Complimentary insured delivery across India on every order.",
+    title: "Free Gurugram Delivery",
+    body: "We deliver within Gurugram only, and delivery is always free.",
   },
   {
-    title: "Easy Returns",
-    body: "Seven days to change your mind, in original condition and packaging.",
+    title: "7-Day Exchange",
+    body: "Exchange at the showroom within 7 days, tags intact and unworn. No refunds.",
   },
   {
     title: "Showroom Service",
-    body: "In-house battery, strap and servicing support at our Gurgaon store.",
+    body: "In-house battery, strap and servicing support at our Gurugram store.",
   },
 ] as const;
+
+/** One line, used wherever shipping has to be stated briefly. */
+export const shippingLine =
+  "Free delivery within Gurugram · Exchange at the showroom within 7 days";
 
 /**
  * PDP spec rows, in display order.

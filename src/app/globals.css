@@ -1,32 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- Black & Beige ------------------------------------------------ */
-  /* Warm blacks, never pure #000 — pure black flattens the gold tones
-     in the product photography. */
-  --color-ink: #0c0b09;
-  --color-ink-soft: #16140f;
-  --color-charcoal: #24201a;
+  /* --- All black -----------------------------------------------------
+     The canvas is black and everything reads light on top of it.
+     `ink-*` are the backgrounds, darkest first; `sand-*` are now the
+     foreground ramp, lightest first. The names are kept so the whole
+     component tree did not have to be renamed. */
+  --color-ink: #000000;
+  --color-ink-soft: #0b0b0b;
+  --color-charcoal: #161616;
 
-  /* Beige canvas */
-  --color-sand-50: #faf7f1;
-  --color-sand-100: #f3ede2;
-  --color-sand-200: #e9e0d0;
-  --color-sand-300: #dbcfb9;
-  --color-sand-400: #c4b49a;
+  /* Foreground ramp. 300 and 400 stayed dark because they are only ever
+     used for borders and rules, which must sit just above the canvas. */
+  --color-sand-50: #fafafa;
+  --color-sand-100: #e8e8e8;
+  --color-sand-200: #cfcfcf;
+  --color-sand-300: #2b2b2b;
+  --color-sand-400: #3a3a3a;
 
-  /* Brass — pulled from the rose-gold watch cases */
-  --color-brass: #b08d57;
-  --color-brass-light: #c9a877;
-  --color-brass-dark: #8a6d41;
+  /* Brass — the one accent. Lifted for contrast against black. */
+  --color-brass: #c9a263;
+  --color-brass-light: #e0c08a;
+  --color-brass-dark: #a07d3d;
+
+  /* A warm beige, for the announcement bar and anywhere else that wants
+     warmth without reaching for the brass accent. */
+  --color-beige: #e2d5bd;
 
   /* Text */
-  --color-muted: #6e675c;
-  --color-muted-light: #a8a094;
+  --color-muted: #9a9a9a;
+  --color-muted-light: #b5b5b5;
 
-  /* Product tiles stay near-white: the catalogue mixes white-cutout and
-     coloured studio shots, and beige tiles make the cutouts look patched. */
-  --color-tile: #fbfaf8;
+  /* Product tiles stay light: the catalogue is white-background JPEGs, so
+     a dark tile would frame each watch in a white box. */
+  --color-tile: #f4f4f4;
 
   --font-display: var(--font-cormorant), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -36,7 +43,7 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html {
@@ -57,8 +64,8 @@
   }
 
   body {
-    background-color: var(--color-sand-100);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-sand-50);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -66,7 +73,7 @@
 
   ::selection {
     background-color: var(--color-brass);
-    color: var(--color-sand-50);
+    color: var(--color-ink);
   }
 
   :focus-visible {
@@ -82,7 +89,7 @@
     font-weight: 500;
     letter-spacing: var(--tracking-luxe);
     text-transform: uppercase;
-    color: var(--color-brass-dark);
+    color: var(--color-brass-light);
   }
 
   .nav-link {
@@ -143,27 +150,27 @@
     cursor: pointer;
   }
   .btn-primary {
-    background-color: var(--color-ink);
-    color: var(--color-sand-50);
+    background-color: var(--color-sand-50);
+    color: var(--color-ink);
   }
   .btn-primary:hover:not(:disabled) {
-    background-color: var(--color-brass-dark);
+    background-color: var(--color-brass-light);
   }
   .btn-primary:disabled {
     background-color: var(--color-sand-400);
-    color: var(--color-sand-100);
+    color: var(--color-muted-light);
     cursor: not-allowed;
   }
   .btn-outline {
-    border-color: var(--color-ink);
-    color: var(--color-ink);
-  }
-  .btn-outline:hover {
-    background-color: var(--color-ink);
+    border-color: rgb(255 255 255 / 0.25);
     color: var(--color-sand-50);
   }
+  .btn-outline:hover {
+    background-color: var(--color-sand-50);
+    color: var(--color-ink);
+  }
   .btn-light {
-    border-color: var(--color-sand-300);
+    border-color: rgb(255 255 255 / 0.25);
     color: var(--color-sand-50);
   }
   .btn-light:hover {
@@ -194,11 +201,11 @@
 
   .field {
     width: 100%;
-    border: 1px solid var(--color-sand-400);
-    background-color: var(--color-sand-50);
+    border: 1px solid rgb(255 255 255 / 0.15);
+    background-color: var(--color-ink-soft);
     padding: 0.75rem 0.875rem;
     font-size: 0.9375rem;
-    color: var(--color-ink);
+    color: var(--color-sand-50);
     transition: border-color 0.2s ease;
   }
   .field::placeholder {
@@ -218,18 +225,18 @@
     color: var(--color-muted);
   }
   .form-error {
-    border-left: 2px solid #9b1c1c;
-    background-color: #fdf2f2;
+    border-left: 2px solid #ef4444;
+    background-color: #1c0e0e;
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
-    color: #7f1d1d;
+    color: #fca5a5;
   }
   .form-notice {
     border-left: 2px solid var(--color-brass);
-    background-color: var(--color-sand-50);
+    background-color: var(--color-ink-soft);
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
-    color: var(--color-ink);
+    color: var(--color-sand-50);
   }
 
   .rule {
@@ -254,11 +261,11 @@
   .rte h3 {
     font-family: var(--font-display);
     font-size: 1.5rem;
-    color: var(--color-ink);
+    color: var(--color-sand-50);
     margin-top: 2rem;
   }
   .rte a {
-    color: var(--color-brass-dark);
+    color: var(--color-brass-light);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -271,7 +278,7 @@
     padding-left: 1.25rem;
   }
   .rte strong {
-    color: var(--color-ink);
+    color: var(--color-sand-50);
     font-weight: 600;
   }
 }

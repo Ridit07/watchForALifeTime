@@ -52,7 +52,7 @@ export function CartLineItem({ line }: { line: CartLine }) {
         <div className="flex justify-between gap-4">
           <div className="min-w-0">
             <p className="eyebrow">{titleCase(merchandise.product.vendor)}</p>
-            <h3 className="mt-1 text-sm leading-snug text-ink">
+            <h3 className="mt-1 text-sm leading-snug text-sand-50">
               <Link
                 href={`/products/${merchandise.product.handle}`}
                 className="hover:text-brass-dark"
@@ -61,10 +61,10 @@ export function CartLineItem({ line }: { line: CartLine }) {
               </Link>
             </h3>
             {hasRealOptions && (
-              <p className="mt-1 text-xs text-muted">{merchandise.title}</p>
+              <p className="mt-1 text-xs text-muted-light">{merchandise.title}</p>
             )}
           </div>
-          <p className="shrink-0 text-sm text-ink">
+          <p className="shrink-0 text-sm text-sand-50">
             {formatMoney(line.cost.totalAmount)}
           </p>
         </div>
@@ -73,7 +73,7 @@ export function CartLineItem({ line }: { line: CartLine }) {
           <p
             role={error ? "alert" : undefined}
             className={
-              "mt-2 text-xs " + (error || soldOut ? "text-red-800" : "text-muted")
+              "mt-2 text-xs " + (error || soldOut ? "text-red-800" : "text-muted-light")
             }
           >
             {error ??
@@ -84,17 +84,17 @@ export function CartLineItem({ line }: { line: CartLine }) {
         )}
 
         <div className="mt-auto flex items-center justify-between pt-4">
-          <div className="flex items-center border border-sand-400">
+          <div className="flex items-center border border-white/15">
             <button
               type="button"
               onClick={() => setQuantity(line.quantity - 1)}
               disabled={pending}
               aria-label="Decrease quantity"
-              className="px-3 py-1.5 text-muted transition-colors hover:text-ink disabled:opacity-40"
+              className="px-3 py-1.5 text-muted-light transition-colors hover:text-sand-50 disabled:opacity-40"
             >
               −
             </button>
-            <span className="min-w-8 text-center text-sm text-ink">
+            <span className="min-w-8 text-center text-sm text-sand-50">
               {line.quantity}
             </span>
             <button
@@ -103,7 +103,7 @@ export function CartLineItem({ line }: { line: CartLine }) {
               disabled={pending || atLimit || soldOut}
               aria-label="Increase quantity"
               title={atLimit && limit !== null ? `Only ${limit} in stock` : undefined}
-              className="px-3 py-1.5 text-muted transition-colors hover:text-ink disabled:opacity-30"
+              className="px-3 py-1.5 text-muted-light transition-colors hover:text-sand-50 disabled:opacity-30"
             >
               +
             </button>
@@ -117,7 +117,7 @@ export function CartLineItem({ line }: { line: CartLine }) {
                 void removeLine(line.id);
               })
             }
-            className="text-xs tracking-wider text-muted uppercase underline underline-offset-4 transition-colors hover:text-ink disabled:opacity-40"
+            className="text-xs tracking-wider text-muted-light uppercase underline underline-offset-4 transition-colors hover:text-sand-50 disabled:opacity-40"
           >
             Remove
           </button>

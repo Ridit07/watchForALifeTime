@@ -9,6 +9,7 @@ import { getCollections, getProducts } from "@/lib/shopify";
 import { site } from "@/lib/site";
 import { titleCase } from "@/lib/utils";
 
+/** Shopify ranks BEST_SELLING by units sold, so the hero is the real one. */
 async function HeroSection() {
   const products = await getProducts({ first: 1, sortKey: "BEST_SELLING" });
   return <Hero product={products[0] ?? null} />;
@@ -56,15 +57,15 @@ async function CollectionStrip() {
 
 function Heritage() {
   return (
-    <section className="bg-sand-200/60">
+    <section className="bg-charcoal/60">
       <div className="mx-auto max-w-3xl px-4 py-24 text-center sm:px-6">
         <p className="eyebrow">Our story</p>
-        <h2 className="mt-4 font-display text-3xl font-light leading-snug text-ink sm:text-[2.5rem]">
+        <h2 className="mt-4 font-display text-3xl font-light leading-snug text-sand-50 sm:text-[2.5rem]">
           A showroom built on trust, one watch at a time
         </h2>
         <div aria-hidden className="rule mx-auto my-8 w-24" />
-        <p className="text-[15px] leading-[1.9] text-muted">{site.heritage}</p>
-        <p className="mt-5 text-[15px] leading-[1.9] text-muted">
+        <p className="text-[15px] leading-[1.9] text-muted-light">{site.heritage}</p>
+        <p className="mt-5 text-[15px] leading-[1.9] text-muted-light">
           Three generations on, the counter still works the same way: handle the
           watch, learn how it is made, and choose the one you will still be
           wearing in twenty years.
@@ -88,8 +89,8 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <SectionHeading
-          eyebrow="Handpicked"
-          title="The collection"
+          eyebrow="Most loved"
+          title="Best sellers"
           href="/collections/all"
         />
         <Suspense fallback={<GridSkeleton count={8} />}>

@@ -16,14 +16,14 @@ export function SectionHeading({
     <div className="mb-10 flex items-end justify-between gap-6">
       <div>
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h2 className="mt-2 font-display text-3xl font-light text-ink sm:text-4xl">
+        <h2 className="mt-2 font-display text-3xl font-light text-sand-50 sm:text-4xl">
           {title}
         </h2>
       </div>
       {href && (
         <Link
           href={href}
-          className="group hidden shrink-0 items-center gap-2 text-xs tracking-[0.15em] text-muted uppercase transition-colors hover:text-brass-dark sm:flex"
+          className="group hidden shrink-0 items-center gap-2 text-xs tracking-[0.15em] text-muted-light uppercase transition-colors hover:text-brass-dark sm:flex"
         >
           {linkLabel}
           <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />

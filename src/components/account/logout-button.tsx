@@ -8,7 +8,7 @@ export function LogoutButton() {
   return (
     <a
       href="/account/logout"
-      className="text-xs tracking-[0.15em] text-muted uppercase underline underline-offset-4 transition-colors hover:text-ink"
+      className="text-xs tracking-[0.15em] text-muted-light uppercase underline underline-offset-4 transition-colors hover:text-sand-50"
     >
       Sign out
     </a>

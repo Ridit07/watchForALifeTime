@@ -33,7 +33,23 @@ export const PRODUCT_CARD_FRAGMENT = /* GraphQL */ `
       maxVariantPrice { amount currencyCode }
     }
     featuredImage { ...ImageFields }
-    images(first: 2) { edges { node { ...ImageFields } } }
+    # Up to six, so the card can cycle through the gallery on hover.
+    images(first: 6) { edges { node { ...ImageFields } } }
+    # Catalogue facets. Shopify's product search cannot filter on
+    # metafields (a nonsense key is silently ignored), so the values come
+    # down with the card and the narrowing happens server-side in Node.
+    metafields(identifiers: [
+      { namespace: "shopify", key: "target-gender" }
+      { namespace: "shopify", key: "watch-display" }
+    ]) {
+      key
+      namespace
+      value
+      type
+      references(first: 5) {
+        edges { node { ... on Metaobject { fields { key value } } } }
+      }
+    }
   }
   ${IMAGE_FRAGMENT}
 `;

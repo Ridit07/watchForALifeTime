@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { getCollections } from "@/lib/shopify";
 import { readCart } from "@/lib/cart";
 import { connection } from "next/server";
 import { readCustomer } from "@/lib/auth";
-import { site } from "@/lib/site";
-import { titleCase } from "@/lib/utils";
+import { navLinks, shippingLine, site } from "@/lib/site";
 import { MobileNav } from "./mobile-nav";
 import { SearchIcon, BagIcon, UserIcon } from "./icons";
 
@@ -22,7 +20,7 @@ async function CartCount() {
   return (
     <span
       aria-hidden
-      className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brass px-1 text-[10px] font-semibold text-ink"
+      className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brass px-1 text-[10px] font-semibold text-sand-50"
     >
       {count > 9 ? "9+" : count}
     </span>
@@ -65,29 +63,27 @@ async function AccountLink() {
   );
 }
 
-async function Nav() {
-  const collections = await getCollections();
-
+/**
+ * A fixed four-item bar. Collections are left to the All Watches filters:
+ * with hundreds of pieces across a growing set of brands, listing them in
+ * the header stops scaling almost immediately.
+ */
+function Nav() {
   return (
-    <nav
-      aria-label="Collections"
-      className="hidden items-center gap-8 lg:flex"
-    >
-      <Link href="/collections/all" className="nav-link">
-        All Watches
-      </Link>
-      {collections.slice(0, 5).map((c) => (
-        <Link
-          key={c.handle}
-          href={`/collections/${c.handle}`}
-          className="nav-link"
-        >
-          {titleCase(c.title)}
+    <nav aria-label="Main" className="hidden items-center gap-9 lg:flex">
+      {navLinks.map((l) => (
+        <Link key={l.href} href={l.href} className="nav-link">
+          {l.label}
         </Link>
       ))}
-      <Link href="/about" className="nav-link">
-        Our Story
-      </Link>
+      <a
+        href={site.payUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="nav-link text-brass-light hover:text-sand-50"
+      >
+        Pay Here
+      </a>
     </nav>
   );
 }
@@ -96,8 +92,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-ink text-sand-100 print:hidden">
       <div className="border-b border-white/10 bg-ink-soft">
-        <p className="mx-auto max-w-7xl px-4 py-2 text-center text-[11px] tracking-[0.15em] text-sand-300 uppercase">
-          Authorised retailer · Free insured shipping across Gurgaon
+        <p className="mx-auto max-w-7xl px-4 py-2 text-center text-[11px] tracking-[0.15em] text-beige uppercase">
+          Authorised retailer · {shippingLine}
         </p>
       </div>
 
@@ -160,11 +156,6 @@ export function Header() {
 async function MobileNavLoader() {
   await connection();
 
-  const [collections, customer] = await Promise.all([
-    getCollections(),
-    readCustomer(),
-  ]);
-  return (
-    <MobileNav collections={collections} signedIn={Boolean(customer)} />
-  );
+  const customer = await readCustomer();
+  return <MobileNav signedIn={Boolean(customer)} />;
 }

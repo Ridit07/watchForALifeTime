@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { getCollections, getPolicies } from "@/lib/shopify";
-import { site } from "@/lib/site";
+import { shippingLine, site } from "@/lib/site";
 import { titleCase } from "@/lib/utils";
 
 /* Shopify returns null for a policy that has not been written yet, so the
@@ -45,6 +45,9 @@ export async function Footer() {
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-light">
               {site.heritage}
             </p>
+            <p className="mt-5 text-xs leading-relaxed text-brass-light">
+              {shippingLine}
+            </p>
           </div>
 
           <div>
@@ -56,6 +59,16 @@ export async function Footer() {
                 <Link href="/collections/all" className="footer-link">
                   All Watches
                 </Link>
+              </li>
+              <li>
+                <a
+                  href={site.payUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link"
+                >
+                  Pay Here
+                </a>
               </li>
               {collections.map((c) => (
                 <li key={c.handle}>
@@ -100,7 +113,7 @@ export async function Footer() {
           <p>
             © <CopyrightYear /> {site.name}. All rights reserved.
           </p>
-          <p>Gurgaon, Haryana · India</p>
+          <p>Gurugram, Haryana · India</p>
         </div>
       </div>
     </footer>

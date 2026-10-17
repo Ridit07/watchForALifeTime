@@ -136,7 +136,7 @@ async function ProductDetail({ params }: { params: Params }) {
       />
 
       <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
-        <nav aria-label="Breadcrumb" className="text-xs text-muted">
+        <nav aria-label="Breadcrumb" className="text-xs text-muted-light">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
               <Link href="/" className="hover:text-brass-dark">
@@ -150,7 +150,7 @@ async function ProductDetail({ params }: { params: Params }) {
               </Link>
             </li>
             <li aria-hidden>/</li>
-            <li className="text-ink">{product.title}</li>
+            <li className="text-sand-50">{product.title}</li>
           </ol>
         </nav>
       </div>
@@ -162,12 +162,12 @@ async function ProductDetail({ params }: { params: Params }) {
           {product.vendor && (
             <p className="eyebrow">{titleCase(product.vendor)}</p>
           )}
-          <h1 className="mt-3 font-display text-3xl leading-tight font-light text-ink sm:text-[2.5rem]">
+          <h1 className="mt-3 font-display text-3xl leading-tight font-light text-sand-50 sm:text-[2.5rem]">
             {product.title}
           </h1>
 
           <div className="mt-5 flex flex-wrap items-baseline gap-3">
-            <p className="text-2xl text-ink">{formatMoney(price)}</p>
+            <p className="text-2xl text-sand-50">{formatMoney(price)}</p>
             {off !== null && (
               <>
                 <p className="text-base text-muted-light line-through">
@@ -179,7 +179,7 @@ async function ProductDetail({ params }: { params: Params }) {
               </>
             )}
           </div>
-          <p className="mt-1.5 text-xs text-muted">Inclusive of all taxes</p>
+          <p className="mt-1.5 text-xs text-muted-light">Inclusive of all taxes</p>
 
           {product.availableForSale ? (
             inStock !== null && inStock <= 3 ? (
@@ -187,24 +187,24 @@ async function ProductDetail({ params }: { params: Params }) {
                 Only {inStock} {inStock === 1 ? "piece" : "pieces"} left
               </p>
             ) : (
-              <p className="mt-4 text-sm text-muted">In stock</p>
+              <p className="mt-4 text-sm text-muted-light">In stock</p>
             )
           ) : (
-            <p className="mt-4 text-sm text-muted">
+            <p className="mt-4 text-sm text-muted-light">
               Currently unavailable — contact the showroom for availability.
             </p>
           )}
 
           <Suspense
             fallback={
-              <div className="mt-8 h-12 w-full animate-pulse bg-sand-200" />
+              <div className="mt-8 h-12 w-full animate-pulse bg-charcoal" />
             }
           >
             <AddToCartSection product={product} />
           </Suspense>
 
           {product.descriptionHtml && (
-            <div className="mt-10 border-t border-sand-300 pt-8">
+            <div className="mt-10 border-t border-white/10 pt-8">
               <h2 className="eyebrow mb-4">Details</h2>
               <div
                 className="rte text-[15px]"
@@ -214,24 +214,24 @@ async function ProductDetail({ params }: { params: Params }) {
           )}
 
           {specs.length > 0 && (
-            <div className="mt-10 border-t border-sand-300 pt-8">
+            <div className="mt-10 border-t border-white/10 pt-8">
               <h2 className="eyebrow mb-4">Specification</h2>
-              <dl className="divide-y divide-sand-300 text-sm">
+              <dl className="divide-y divide-white/10 text-sm">
                 {specs.map((s) => (
                   <div key={s.key} className="flex justify-between gap-6 py-3">
-                    <dt className="text-muted">{s.label}</dt>
-                    <dd className="text-right text-ink">{s.value}</dd>
+                    <dt className="text-muted-light">{s.label}</dt>
+                    <dd className="text-right text-sand-50">{s.value}</dd>
                   </div>
                 ))}
               </dl>
             </div>
           )}
 
-          <ul className="mt-10 grid gap-4 border-t border-sand-300 pt-8 sm:grid-cols-2">
+          <ul className="mt-10 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-2">
             {assurances.map((a) => (
               <li key={a.title}>
-                <p className="text-[13px] font-medium text-ink">{a.title}</p>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted">
+                <p className="text-[13px] font-medium text-sand-50">{a.title}</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-light">
                   {a.body}
                 </p>
               </li>

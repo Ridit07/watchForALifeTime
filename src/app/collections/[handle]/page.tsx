@@ -2,8 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ProductGrid } from "@/components/product-grid";
+import { ProductFilters, LoadMore } from "@/components/product-filters";
 import { CollectionSkeleton } from "@/components/skeletons";
-import { getCollection, getCollections, getProducts } from "@/lib/shopify";
+import { getCollection, getCollections, getProducts, getVendors } from "@/lib/shopify";
+import {
+  facetOptions,
+  matchesFacets,
+  MAX_PRODUCTS,
+  parseFilters,
+  toShopifyQuery,
+  type SearchParams,
+} from "@/lib/filters";
 import { titleCase } from "@/lib/utils";
 
 /** `all` is a virtual collection — every product, not a Shopify collection. */
@@ -39,20 +48,48 @@ export async function generateMetadata({
 
 type Params = PageProps<"/collections/[handle]">["params"];
 
-async function CollectionView({ params }: { params: Params }) {
-  const { handle } = await params;
+async function CollectionView({
+  params,
+  searchParams,
+}: {
+  params: Params;
+  searchParams: Promise<SearchParams>;
+}) {
+  const [{ handle }, sp] = await Promise.all([params, searchParams]);
+  const filters = parseFilters(sp);
 
-  const data =
-    handle === ALL
-      ? {
-          title: "All Watches",
-          description:
-            "The complete collection — every piece currently on our shelves.",
-          products: await getProducts({ first: 100, sortKey: "BEST_SELLING" }),
-        }
-      : await getCollection(handle);
+  /* A real Shopify collection is narrowed with its own handle rather than
+     fetched whole and filtered here, so the work stays server-side and the
+     grid scales past a few hundred pieces. */
+  const scope = handle === ALL ? undefined : `collection:${handle}`;
 
-  if (!data) notFound();
+  /* Facets are applied here rather than in the query, so when one is in
+     play the whole page has to come down before it can be narrowed. */
+  const facetsActive = Object.keys(filters.facets).length > 0;
+
+  const [fetched, vendors, collection] = await Promise.all([
+    getProducts({
+      first: facetsActive ? MAX_PRODUCTS : filters.first,
+      sortKey: filters.sort.sortKey,
+      reverse: filters.sort.reverse,
+      query: toShopifyQuery(filters, scope),
+    }),
+    getVendors(),
+    handle === ALL ? Promise.resolve(null) : getCollection(handle),
+  ]);
+
+  if (handle !== ALL && !collection) notFound();
+
+  const options = facetOptions(fetched);
+  const matched = facetsActive
+    ? fetched.filter((p) => matchesFacets(p, filters.facets))
+    : fetched;
+  const products = matched.slice(0, filters.first);
+
+  const title = collection ? titleCase(collection.title) : "All Watches";
+  const description =
+    collection?.description ||
+    "The complete collection — every piece currently on our shelves.";
 
   return (
     <>
@@ -60,35 +97,45 @@ async function CollectionView({ params }: { params: Params }) {
         <div className="mx-auto max-w-2xl px-4">
           <p className="eyebrow text-brass-light">Collection</p>
           <h1 className="mt-3 font-display text-4xl font-light text-sand-50 sm:text-5xl">
-            {titleCase(data.title)}
+            {title}
           </h1>
-          {data.description && (
+          {description && (
             <p className="mt-5 text-[15px] leading-relaxed text-muted-light">
-              {data.description}
+              {description}
             </p>
           )}
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <p className="mb-8 text-xs tracking-[0.15em] text-muted uppercase">
-          {data.products.length}{" "}
-          {data.products.length === 1 ? "piece" : "pieces"}
-        </p>
-        <ProductGrid products={data.products} />
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+        <ProductFilters
+          vendors={vendors}
+          facetOptions={options}
+          total={matched.length}
+          active={filters.active}
+        />
+
+        <div className="pt-4">
+          <ProductGrid products={products} />
+        </div>
+
+        {/* `first` was asked for; a full page back means there is likely more. */}
+        <LoadMore
+          shown={filters.first}
+          hasMore={matched.length > products.length}
+        />
       </section>
     </>
   );
 }
 
-/* Reading `params` here would block the navigation, so the body sits behind a
-   boundary and the skeleton paints while the collection loads. */
 export default function CollectionPage({
   params,
+  searchParams,
 }: PageProps<"/collections/[handle]">) {
   return (
     <Suspense fallback={<CollectionSkeleton />}>
-      <CollectionView params={params} />
+      <CollectionView params={params} searchParams={searchParams} />
     </Suspense>
   );
 }

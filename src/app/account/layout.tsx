@@ -1,3 +1,3 @@
 export default function AccountLayout({ children }: LayoutProps<"/account">) {
-  return <div className="bg-sand-100">{children}</div>;
+  return <div className="bg-ink">{children}</div>;
 }

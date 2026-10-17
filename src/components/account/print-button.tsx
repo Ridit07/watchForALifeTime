@@ -6,7 +6,7 @@ export function PrintButton() {
     <button
       type="button"
       onClick={() => window.print()}
-      className="text-xs tracking-[0.15em] text-muted uppercase underline underline-offset-4 hover:text-ink"
+      className="text-xs tracking-[0.15em] text-muted-light uppercase underline underline-offset-4 hover:text-sand-50"
     >
       Print
     </button>

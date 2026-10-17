@@ -34,16 +34,16 @@ function OrderCard({ order }: { order: CustomerOrder }) {
   });
 
   return (
-    <li className="bg-sand-50 p-6">
+    <li className="bg-ink p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="font-display text-lg text-ink">
+          <p className="font-display text-lg text-sand-50">
             Order #{order.orderNumber}
           </p>
-          <p className="mt-1 text-xs text-muted">{date}</p>
+          <p className="mt-1 text-xs text-muted-light">{date}</p>
         </div>
         <div className="text-right">
-          <p className="text-sm font-medium text-ink">
+          <p className="text-sm font-medium text-sand-50">
             {formatMoney(order.currentTotalPrice)}
           </p>
           <p className="mt-1 text-[11px] tracking-[0.15em] text-brass-dark uppercase">
@@ -66,7 +66,7 @@ function OrderCard({ order }: { order: CustomerOrder }) {
                 />
               </div>
             )}
-            <span className="text-xs text-muted">
+            <span className="text-xs text-muted-light">
               {item.title}
               {item.quantity > 1 && ` × ${item.quantity}`}
             </span>
@@ -79,13 +79,13 @@ function OrderCard({ order }: { order: CustomerOrder }) {
           href={order.statusUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs tracking-[0.15em] text-muted uppercase underline underline-offset-4 hover:text-ink"
+          className="text-xs tracking-[0.15em] text-muted-light uppercase underline underline-offset-4 hover:text-sand-50"
         >
           Track this order
         </a>
         <Link
           href={`/account/orders/${order.orderNumber}`}
-          className="text-xs tracking-[0.15em] text-muted uppercase underline underline-offset-4 hover:text-ink"
+          className="text-xs tracking-[0.15em] text-muted-light uppercase underline underline-offset-4 hover:text-sand-50"
         >
           View invoice
         </Link>
@@ -110,11 +110,11 @@ async function AccountContents() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="eyebrow">Your account</p>
-          <h1 className="mt-2 font-display text-3xl font-light text-ink sm:text-4xl">
+          <h1 className="mt-2 font-display text-3xl font-light text-sand-50 sm:text-4xl">
             {name || "Welcome back"}
           </h1>
           {customer.email && (
-            <p className="mt-2 text-sm text-muted">{customer.email}</p>
+            <p className="mt-2 text-sm text-muted-light">{customer.email}</p>
           )}
         </div>
         <LogoutButton />
@@ -132,8 +132,8 @@ async function AccountContents() {
               ))}
             </ul>
           ) : (
-            <div className="bg-sand-50 p-10 text-center">
-              <p className="text-sm text-muted">
+            <div className="bg-ink p-10 text-center">
+              <p className="text-sm text-muted-light">
                 You have not placed an order yet.
               </p>
               <Link href="/collections/all" className="btn btn-primary mt-6">
@@ -146,9 +146,9 @@ async function AccountContents() {
         <aside>
           <h2 className="eyebrow mb-5">Default address</h2>
           {address ? (
-            <address className="bg-sand-50 p-6 text-sm leading-relaxed text-muted not-italic">
+            <address className="bg-ink p-6 text-sm leading-relaxed text-muted-light not-italic">
               {[address.firstName, address.lastName].filter(Boolean).join(" ") && (
-                <span className="block text-ink">
+                <span className="block text-sand-50">
                   {[address.firstName, address.lastName]
                     .filter(Boolean)
                     .join(" ")}
@@ -167,7 +167,7 @@ async function AccountContents() {
               )}
             </address>
           ) : (
-            <p className="bg-sand-50 p-6 text-sm text-muted">
+            <p className="bg-ink p-6 text-sm text-muted-light">
               No address saved yet. You can add one during checkout.
             </p>
           )}
@@ -183,9 +183,9 @@ export default function AccountPage() {
       <Suspense
         fallback={
           <div className="animate-pulse space-y-6">
-            <div className="h-10 w-56 bg-sand-200" />
-            <div className="h-32 bg-sand-200" />
-            <div className="h-32 bg-sand-200" />
+            <div className="h-10 w-56 bg-charcoal" />
+            <div className="h-32 bg-charcoal" />
+            <div className="h-32 bg-charcoal" />
           </div>
         }
       >

@@ -35,7 +35,7 @@ async function Body({
         </p>
       )}
 
-      <p className="text-center text-sm leading-relaxed text-muted">
+      <p className="text-center text-sm leading-relaxed text-muted-light">
         We will email you a one-time code — no password to remember.
       </p>
 
@@ -57,7 +57,7 @@ export default function LoginPage({
       title="Sign in"
       intro="Access your orders and saved details."
     >
-      <Suspense fallback={<div className="h-28 animate-pulse bg-sand-200" />}>
+      <Suspense fallback={<div className="h-28 animate-pulse bg-charcoal" />}>
         <Body searchParams={searchParams} />
       </Suspense>
     </AuthShell>

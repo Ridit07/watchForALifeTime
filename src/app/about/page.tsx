@@ -21,7 +21,7 @@ export default function AboutPage() {
       </header>
 
       <article className="mx-auto max-w-2xl px-4 py-20 sm:px-6">
-        <p className="font-display text-2xl leading-relaxed font-light text-ink">
+        <p className="font-display text-2xl leading-relaxed font-light text-sand-50">
           {site.heritage}
         </p>
 
@@ -48,10 +48,11 @@ export default function AboutPage() {
           </p>
           <h2>Buying online</h2>
           <p>
-            Everything on this site is the same stock that sits in the showroom.
-            Orders ship insured across India, and if a piece is not right when it
-            arrives, you have seven days to send it back in its original
-            condition.
+            Everything on this site is the same stock that sits in the
+            showroom. We deliver within Gurugram only, and delivery is free.
+            If a piece is not right, bring it back to the showroom within
+            seven days with the tags intact and unworn, and we will exchange
+            it. We do not offer refunds.
           </p>
         </div>
 

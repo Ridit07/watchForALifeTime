@@ -29,7 +29,7 @@ async function SearchField({ searchParams }: { searchParams: SearchParams }) {
       type="search"
       defaultValue={query}
       placeholder="Search by brand, style or name…"
-      className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-ink placeholder:text-muted-light focus:outline-none"
+      className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-sand-50 placeholder:text-muted-light focus:outline-none"
     />
   );
 }
@@ -41,7 +41,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
     const products = await getProducts({ first: 12, sortKey: "BEST_SELLING" });
     return (
       <>
-        <p className="mb-8 text-xs tracking-[0.15em] text-muted uppercase">
+        <p className="mb-8 text-xs tracking-[0.15em] text-muted-light uppercase">
           Popular right now
         </p>
         <ProductGrid products={products} />
@@ -53,14 +53,14 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
 
   return (
     <>
-      <p className="mb-8 text-xs tracking-[0.15em] text-muted uppercase">
+      <p className="mb-8 text-xs tracking-[0.15em] text-muted-light uppercase">
         {products.length} {products.length === 1 ? "result" : "results"} for
         &ldquo;{query}&rdquo;
       </p>
       {products.length ? (
         <ProductGrid products={products} />
       ) : (
-        <p className="py-16 text-center text-sm text-muted">
+        <p className="py-16 text-center text-sm text-muted-light">
           Nothing matched that. Try a brand name such as Titan, or a style like
           &ldquo;leather&rdquo;.
         </p>
@@ -72,7 +72,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
 export default function SearchPage({ searchParams }: PageProps<"/search">) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-3xl font-light text-ink sm:text-4xl">
+      <h1 className="font-display text-3xl font-light text-sand-50 sm:text-4xl">
         Search
       </h1>
 
@@ -80,7 +80,7 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
         <label htmlFor="q" className="sr-only">
           Search watches
         </label>
-        <div className="flex border border-sand-400 bg-sand-50">
+        <div className="flex border border-white/15 bg-ink">
           <Suspense
             fallback={
               <input
@@ -88,7 +88,7 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
                 name="q"
                 type="search"
                 placeholder="Search by brand, style or name…"
-                className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-ink placeholder:text-muted-light focus:outline-none"
+                className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-sand-50 placeholder:text-muted-light focus:outline-none"
               />
             }
           >

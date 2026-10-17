@@ -56,7 +56,7 @@ function QuantityStepper({
     <div>
       <div
         className={cx(
-          "flex items-stretch justify-between border border-ink transition-opacity",
+          "flex items-stretch justify-between border border-sand-50 transition-opacity",
           pending && "opacity-50",
         )}
       >
@@ -67,14 +67,14 @@ function QuantityStepper({
           aria-label={
             entry.quantity === 1 ? "Remove from bag" : "Decrease quantity"
           }
-          className="px-5 py-3 text-lg leading-none text-ink transition-colors hover:bg-sand-200 disabled:opacity-40"
+          className="px-5 py-3 text-lg leading-none text-sand-50 transition-colors hover:bg-charcoal disabled:opacity-40"
         >
           −
         </button>
 
         <span
           aria-live="polite"
-          className="flex flex-1 items-center justify-center text-sm tracking-wider text-ink"
+          className="flex flex-1 items-center justify-center text-sm tracking-wider text-sand-50"
         >
           {entry.quantity} in bag
         </span>
@@ -84,14 +84,14 @@ function QuantityStepper({
           onClick={() => set(entry.quantity + 1)}
           disabled={pending || atLimit}
           aria-label="Increase quantity"
-          className="px-5 py-3 text-lg leading-none text-ink transition-colors hover:bg-sand-200 disabled:opacity-30"
+          className="px-5 py-3 text-lg leading-none text-sand-50 transition-colors hover:bg-charcoal disabled:opacity-30"
         >
           +
         </button>
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4 text-xs">
-        <span className="text-muted">
+        <span className="text-muted-light">
           {error ? (
             <span role="alert" className="text-red-800">
               {error}
@@ -108,7 +108,7 @@ function QuantityStepper({
 
         <Link
           href="/cart"
-          className="shrink-0 tracking-[0.15em] text-muted uppercase underline underline-offset-4 hover:text-ink"
+          className="shrink-0 tracking-[0.15em] text-muted-light uppercase underline underline-offset-4 hover:text-sand-50"
         >
           View bag
         </Link>
@@ -176,8 +176,8 @@ export function AddToCart({
                       className={cx(
                         "border px-4 py-2 text-xs tracking-wider uppercase transition-colors",
                         isActive
-                          ? "border-ink bg-ink text-sand-50"
-                          : "border-sand-400 text-ink hover:border-ink",
+                          ? "border-sand-50 bg-sand-50 text-ink"
+                          : "border-white/15 text-sand-50 hover:border-sand-50",
                         unavailable && "line-through opacity-40",
                       )}
                     >
@@ -192,7 +192,7 @@ export function AddToCart({
       )}
 
       {selected && !isSingleVariant && (
-        <p className="mb-5 text-lg font-medium text-ink">
+        <p className="mb-5 text-lg font-medium text-sand-50">
           {formatMoney(selected.price)}
         </p>
       )}
