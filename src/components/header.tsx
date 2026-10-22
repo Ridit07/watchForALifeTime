@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { readCart } from "@/lib/cart";
 import { connection } from "next/server";
 import { readCustomer } from "@/lib/auth";
-import { navLinks, shippingLine, site } from "@/lib/site";
+import { navLinks, site } from "@/lib/site";
+import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
 import { SearchIcon, BagIcon, UserIcon } from "./icons";
 
@@ -20,7 +21,7 @@ async function CartCount() {
   return (
     <span
       aria-hidden
-      className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brass px-1 text-[10px] font-semibold text-sand-50"
+      className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brass px-1 text-[10px] font-semibold text-olive"
     >
       {count > 9 ? "9+" : count}
     </span>
@@ -70,7 +71,10 @@ async function AccountLink() {
  */
 function Nav() {
   return (
-    <nav aria-label="Main" className="hidden items-center gap-9 lg:flex">
+    <nav
+      aria-label="Main"
+      className="hidden items-center justify-center gap-12 lg:flex"
+    >
       {navLinks.map((l) => (
         <Link key={l.href} href={l.href} className="nav-link">
           {l.label}
@@ -90,38 +94,29 @@ function Nav() {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-ink text-sand-100 print:hidden">
-      <div className="border-b border-white/10 bg-ink-soft">
-        <p className="mx-auto max-w-7xl px-4 py-2 text-center text-[11px] tracking-[0.15em] text-beige uppercase">
-          Authorised retailer · {shippingLine}
-        </p>
-      </div>
+    /* A direct child of <body>, not wrapped: a sticky element can only stick
+       inside its own parent, so a wrapper here would let the bar scroll away
+       the moment that wrapper ended. */
+    <header className="sticky top-0 z-50 border-b border-sand-50/10 bg-ink text-sand-100 print:hidden">
+      <div className="shell flex items-center gap-6 py-4">
+        <div className="flex items-center gap-3">
+          <div className="lg:hidden">
+            <Suspense fallback={null}>
+              <MobileNavLoader />
+            </Suspense>
+          </div>
 
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <div className="flex items-center gap-3 lg:hidden">
-          <Suspense fallback={null}>
-            <MobileNavLoader />
-          </Suspense>
+          <Link href="/" aria-label={`${site.name} — home`}>
+            <Logo height={56} priority className="h-11 w-auto sm:h-14" />
+          </Link>
         </div>
 
-        <Link
-          href="/"
-          className="font-display text-xl leading-none tracking-wide text-sand-50 sm:text-2xl lg:flex-none"
-        >
-          <span className="block">{site.shortName}</span>
-          <span className="mt-0.5 block text-[9px] tracking-[0.3em] text-brass-light uppercase">
-            Watches · Since Gurgaon
-          </span>
-        </Link>
+        <div className="flex flex-1 justify-center">
+          <Nav />
+        </div>
 
-        <Nav />
-
-        <div className="flex items-center gap-1 sm:gap-2">
-          <Link
-            href="/search"
-            aria-label="Search"
-            className="icon-button"
-          >
+        <div className="flex items-center justify-end gap-1 sm:gap-2">
+          <Link href="/search" aria-label="Search" className="icon-button">
             <SearchIcon />
           </Link>
           <Suspense

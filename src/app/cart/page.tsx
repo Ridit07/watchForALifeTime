@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 function EmptyBag() {
   return (
-    <div className="py-24 text-center">
+    <div className="py-32 text-center">
       <p className="font-display text-2xl font-light text-sand-50">
         Your bag is empty
       </p>
@@ -37,17 +37,17 @@ async function CartContents() {
   if (!cart || !cart.lines.length) return <EmptyBag />;
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[1fr_380px] lg:gap-16">
+    <div className="grid gap-16 lg:grid-cols-[1fr_380px] lg:gap-24">
       <section aria-label="Bag contents">
-        <ul className="divide-y divide-white/10 border-y border-white/10">
+        <ul className="divide-y divide-sand-50/10 border-y border-sand-50/10">
           {cart.lines.map((line) => (
             <CartLineItem key={line.id} line={line} />
           ))}
         </ul>
       </section>
 
-      <aside className="lg:sticky lg:top-32 lg:self-start">
-        <div className="bg-ink p-7">
+      <aside className="lg:sticky lg:top-28 lg:self-start">
+        <div className="border border-sand-50/10 bg-olive p-9">
           <h2 className="font-display text-xl text-sand-50">Order summary</h2>
 
           <dl className="mt-6 space-y-3 text-sm">
@@ -61,7 +61,7 @@ async function CartContents() {
               <dt className="text-muted-light">Shipping</dt>
               <dd className="text-sand-50">Free</dd>
             </div>
-            <div className="flex justify-between border-t border-white/10 pt-3 text-base">
+            <div className="flex justify-between border-t border-sand-50/10 pt-4 text-base">
               <dt className="text-sand-50">Total</dt>
               <dd className="font-medium text-sand-50">
                 {formatMoney(cart.cost.totalAmount)}
@@ -99,8 +99,8 @@ async function CartContents() {
 
 export default function CartPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-      <h1 className="mb-10 font-display text-3xl font-light text-sand-50 sm:text-4xl">
+    <div className="shell py-16 md:py-24">
+      <h1 className="mb-14 font-display text-[2.5rem] leading-tight font-light text-sand-50 sm:text-5xl">
         Your bag
       </h1>
       <Suspense

@@ -11,17 +11,17 @@ export function AuthShell({
   children: ReactNode;
 }) {
   return (
-    <div className="mx-auto max-w-md px-4 py-20 sm:px-6">
+    <div className="mx-auto max-w-md px-6 py-24 sm:px-10 md:py-32">
       <div className="text-center">
         <p className="eyebrow">{title === "Sign in" ? "Welcome back" : "Account"}</p>
-        <h1 className="mt-3 font-display text-3xl font-light text-sand-50">
+        <h1 className="mt-5 font-display text-[2.25rem] font-light text-sand-50">
           {title}
         </h1>
         {intro && (
-          <p className="mt-3 text-sm leading-relaxed text-muted-light">{intro}</p>
+          <p className="mt-5 text-sm leading-[1.9] text-muted-light">{intro}</p>
         )}
       </div>
-      <div aria-hidden className="rule my-9" />
+      <div aria-hidden className="rule my-12" />
       {children}
     </div>
   );

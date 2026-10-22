@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PageHeader } from "@/components/page-header";
 import { getPage, getPageHandles } from "@/lib/shopify";
 
 export async function generateStaticParams() {
@@ -31,12 +32,8 @@ export default async function ShopifyPage({
 
   return (
     <>
-      <header className="bg-ink py-16 text-center text-sand-100">
-        <h1 className="mx-auto max-w-2xl px-4 font-display text-4xl font-light text-sand-50">
-          {page.title}
-        </h1>
-      </header>
-      <article className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
+      <PageHeader title={page.title} />
+      <article className="shell-prose section">
         <div
           className="rte text-[15px]"
           dangerouslySetInnerHTML={{ __html: page.body }}

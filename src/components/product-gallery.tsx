@@ -25,7 +25,7 @@ export function ProductGallery({
   const current = images[Math.min(active, images.length - 1)];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <div className="relative aspect-square overflow-hidden bg-tile">
         <Image
           key={current.url}
@@ -34,12 +34,12 @@ export function ProductGallery({
           fill
           priority
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="animate-fade object-contain p-6"
+          className="animate-fade object-contain"
         />
       </div>
 
       {images.length > 1 && (
-        <ul className="grid grid-cols-5 gap-3">
+        <ul className="grid grid-cols-5 gap-4">
           {images.map((img, i) => (
             <li key={img.url}>
               <button
@@ -59,7 +59,7 @@ export function ProductGallery({
                   alt=""
                   fill
                   sizes="12vw"
-                  className="object-contain p-1.5"
+                  className="object-contain"
                 />
               </button>
             </li>

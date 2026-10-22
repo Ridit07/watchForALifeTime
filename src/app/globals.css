@@ -1,44 +1,53 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- All black -----------------------------------------------------
-     The canvas is black and everything reads light on top of it.
-     `ink-*` are the backgrounds, darkest first; `sand-*` are now the
-     foreground ramp, lightest first. The names are kept so the whole
-     component tree did not have to be renamed. */
+  /* --- Palette ---------------------------------------------------------
+     Taken from watchforalifetime.in: the canvas is black with two olive
+     greens above it, and everything reads in the warm cream #f6eddd that
+     the logo is printed in.
+
+     `ink-*` are the backgrounds, darkest first; `sand-*` are the foreground
+     ramp, lightest first. The names are kept so the whole component tree did
+     not have to be renamed. */
   --color-ink: #000000;
-  --color-ink-soft: #0b0b0b;
-  --color-charcoal: #161616;
+  --color-ink-soft: #181717;
+  --color-charcoal: #202219;
+
+  /* The two olives the reference theme uses for its lifted sections. */
+  --color-olive: #202219;
+  --color-olive-light: #46493c;
 
   /* Foreground ramp. 300 and 400 stayed dark because they are only ever
      used for borders and rules, which must sit just above the canvas. */
-  --color-sand-50: #fafafa;
-  --color-sand-100: #e8e8e8;
-  --color-sand-200: #cfcfcf;
-  --color-sand-300: #2b2b2b;
-  --color-sand-400: #3a3a3a;
+  --color-sand-50: #f6eddd;
+  --color-sand-100: #ece0ca;
+  --color-sand-200: #d5c7ad;
+  --color-sand-300: #33362c;
+  --color-sand-400: #494e39;
 
-  /* Brass — the one accent. Lifted for contrast against black. */
-  --color-brass: #c9a263;
-  --color-brass-light: #e0c08a;
-  --color-brass-dark: #a07d3d;
+  /* Brass — the one accent, sampled from the gold strap in the logo. */
+  --color-brass: #d8bc84;
+  --color-brass-light: #e9d6ae;
+  --color-brass-dark: #a98b50;
 
-  /* A warm beige, for the announcement bar and anywhere else that wants
-     warmth without reaching for the brass accent. */
-  --color-beige: #e2d5bd;
+  /* The reference theme's button hover cream, for the announcement bar and
+     anywhere else that wants warmth without reaching for the brass accent. */
+  --color-beige: #f1e2c9;
 
-  /* Text */
-  --color-muted: #9a9a9a;
-  --color-muted-light: #b5b5b5;
+  /* Text. Cream held back, rather than a neutral grey — a cold grey against
+     a warm cream reads as two different whites. */
+  --color-muted: #9c9484;
+  --color-muted-light: #bdb3a0;
 
-  /* Product tiles stay light: the catalogue is white-background JPEGs, so
-     a dark tile would frame each watch in a white box. */
-  --color-tile: #f4f4f4;
+  /* Product tiles stay light: the catalogue is white-background JPEGs, so a
+     tinted tile would frame each watch in a visible white box. */
+  --color-tile: #ffffff;
 
   --font-display: var(--font-cormorant), Georgia, serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
 
   --tracking-luxe: 0.18em;
+  --tracking-wide-luxe: 0.3em;
 }
 
 @layer base {
@@ -83,23 +92,76 @@
 }
 
 @layer components {
+  /* --- Layout ----------------------------------------------------------
+     Two classes carry the whole page rhythm. `shell` is the horizontal
+     measure and gutters, `section` the vertical air between bands — both
+     deliberately wide, because the catalogue photography needs room and the
+     reference storefront is built on long empty margins. */
+  .shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 84rem;
+    padding-inline: 1.5rem;
+  }
+  .shell-prose {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 44rem;
+    padding-inline: 1.5rem;
+  }
+  .shell-wide {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 96rem;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .shell,
+    .shell-prose,
+    .shell-wide {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .shell,
+    .shell-prose,
+    .shell-wide {
+      padding-inline: 4rem;
+    }
+  }
+
+  .section {
+    padding-block: 5rem;
+  }
+  .section-tall {
+    padding-block: 6rem;
+  }
+  @media (min-width: 768px) {
+    .section {
+      padding-block: 7.5rem;
+    }
+    .section-tall {
+      padding-block: 10rem;
+    }
+  }
+
   /* Small caps label used above section headings */
   .eyebrow {
     font-size: 0.6875rem;
     font-weight: 500;
-    letter-spacing: var(--tracking-luxe);
+    letter-spacing: var(--tracking-wide-luxe);
     text-transform: uppercase;
     color: var(--color-brass-light);
   }
 
   .nav-link {
-    font-size: 0.8125rem;
-    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-sand-200);
     transition: color 0.2s ease;
     position: relative;
-    padding-block: 0.25rem;
+    padding-block: 0.375rem;
   }
   .nav-link::after {
     content: "";
@@ -130,19 +192,19 @@
     transition: background-color 0.2s ease, color 0.2s ease;
   }
   .icon-button:hover {
-    background-color: rgb(255 255 255 / 0.08);
+    background-color: rgb(246 237 221 / 0.1);
     color: var(--color-sand-50);
   }
 
-  /* Primary action — brass on dark, used for Add to bag / Checkout */
+  /* Primary action — cream on dark, as the reference theme has it. */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.625rem;
     border: 1px solid transparent;
-    padding: 0.875rem 1.75rem;
-    font-size: 0.75rem;
+    padding: 1.0625rem 2.25rem;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: var(--tracking-luxe);
     text-transform: uppercase;
@@ -151,10 +213,10 @@
   }
   .btn-primary {
     background-color: var(--color-sand-50);
-    color: var(--color-ink);
+    color: var(--color-olive);
   }
   .btn-primary:hover:not(:disabled) {
-    background-color: var(--color-brass-light);
+    background-color: var(--color-beige);
   }
   .btn-primary:disabled {
     background-color: var(--color-sand-400);
@@ -162,28 +224,28 @@
     cursor: not-allowed;
   }
   .btn-outline {
-    border-color: rgb(255 255 255 / 0.25);
+    border-color: rgb(246 237 221 / 0.3);
     color: var(--color-sand-50);
   }
   .btn-outline:hover {
     background-color: var(--color-sand-50);
-    color: var(--color-ink);
+    color: var(--color-olive);
   }
   .btn-light {
-    border-color: rgb(255 255 255 / 0.25);
+    border-color: rgb(246 237 221 / 0.3);
     color: var(--color-sand-50);
   }
   .btn-light:hover {
     background-color: var(--color-sand-50);
-    color: var(--color-ink);
+    color: var(--color-olive);
   }
 
   .mobile-link {
     display: block;
-    border-bottom: 1px solid rgb(255 255 255 / 0.08);
-    padding-block: 0.875rem;
-    font-size: 0.9375rem;
-    letter-spacing: 0.06em;
+    border-bottom: 1px solid rgb(246 237 221 / 0.1);
+    padding-block: 1.125rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-sand-200);
   }
@@ -201,15 +263,15 @@
 
   .field {
     width: 100%;
-    border: 1px solid rgb(255 255 255 / 0.15);
+    border: 1px solid rgb(246 237 221 / 0.18);
     background-color: var(--color-ink-soft);
-    padding: 0.75rem 0.875rem;
+    padding: 0.9375rem 1rem;
     font-size: 0.9375rem;
     color: var(--color-sand-50);
     transition: border-color 0.2s ease;
   }
   .field::placeholder {
-    color: var(--color-muted-light);
+    color: var(--color-muted);
   }
   .field:focus {
     border-color: var(--color-brass);
@@ -217,7 +279,7 @@
   }
   .field-label {
     display: block;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
     font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: var(--tracking-luxe);
@@ -227,14 +289,14 @@
   .form-error {
     border-left: 2px solid #ef4444;
     background-color: #1c0e0e;
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1.125rem;
     font-size: 0.875rem;
     color: #fca5a5;
   }
   .form-notice {
     border-left: 2px solid var(--color-brass);
     background-color: var(--color-ink-soft);
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1.125rem;
     font-size: 0.875rem;
     color: var(--color-sand-50);
   }
@@ -251,18 +313,19 @@
 
   /* Rich-text coming out of Shopify (policies, pages, descriptions) */
   .rte {
-    line-height: 1.75;
-    color: var(--color-muted);
+    line-height: 1.85;
+    color: var(--color-muted-light);
   }
   .rte > * + * {
-    margin-top: 1rem;
+    margin-top: 1.25rem;
   }
   .rte h2,
   .rte h3 {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.625rem;
+    font-weight: 300;
     color: var(--color-sand-50);
-    margin-top: 2rem;
+    margin-top: 2.75rem;
   }
   .rte a {
     color: var(--color-brass-light);
@@ -338,6 +401,11 @@
   article {
     background: transparent !important;
     box-shadow: none !important;
+  }
+
+  .section,
+  .section-tall {
+    padding-block: 0 !important;
   }
 
   tr,

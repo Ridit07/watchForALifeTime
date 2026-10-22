@@ -99,7 +99,7 @@ function QuantityStepper({
           ) : atLimit ? (
             `That's all ${limit} we have`
           ) : (
-            <span className="flex items-center gap-1.5 text-brass-dark">
+            <span className="flex items-center gap-1.5 text-brass">
               <CheckIcon />
               Added to your bag
             </span>
@@ -177,7 +177,7 @@ export function AddToCart({
                         "border px-4 py-2 text-xs tracking-wider uppercase transition-colors",
                         isActive
                           ? "border-sand-50 bg-sand-50 text-ink"
-                          : "border-white/15 text-sand-50 hover:border-sand-50",
+                          : "border-sand-50/20 text-sand-50 hover:border-sand-50",
                         unavailable && "line-through opacity-40",
                       )}
                     >

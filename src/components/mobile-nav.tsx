@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { navLinks, site } from "@/lib/site";
+import { Logo } from "./logo";
 import { MenuIcon, CloseIcon } from "./icons";
 
 export function MobileNav({ signedIn }: { signedIn: boolean }) {
@@ -51,11 +52,11 @@ export function MobileNav({ signedIn }: { signedIn: boolean }) {
             aria-label="Close menu"
             tabIndex={-1}
             onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-ink/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-ink/80 backdrop-blur-sm"
           />
-          <div className="animate-rise absolute inset-y-0 left-0 w-[82%] max-w-sm overflow-y-auto bg-ink px-6 py-5 text-sand-100">
+          <div className="animate-rise absolute inset-y-0 left-0 w-[86%] max-w-sm overflow-y-auto border-r border-sand-50/10 bg-ink px-7 py-6 text-sand-100">
             <div className="flex items-center justify-between">
-              <span className="font-display text-lg text-sand-50">Menu</span>
+              <Logo height={40} className="h-10 w-auto" />
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -66,7 +67,7 @@ export function MobileNav({ signedIn }: { signedIn: boolean }) {
               </button>
             </div>
 
-            <nav className="mt-8 flex flex-col gap-1">
+            <nav className="mt-10 flex flex-col">
               {navLinks.map((l) => (
                 <Link key={l.href} href={l.href} className="mobile-link">
                   {l.label}

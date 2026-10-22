@@ -71,7 +71,7 @@ export function ProductFilters({
 
   return (
     <div className={cx("transition-opacity", pending && "opacity-60")}>
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-5 border-b border-sand-50/10 pb-6">
         <div className="flex items-center gap-4">
           <button
             type="button"
@@ -91,7 +91,7 @@ export function ProductFilters({
           <select
             value={params.get("sort") ?? "featured"}
             onChange={(e) => setParam("sort", e.target.value)}
-            className="border border-white/15 bg-ink px-3 py-1.5 text-xs tracking-normal text-sand-50 normal-case focus:border-sand-50 focus:outline-none"
+            className="border border-sand-50/20 bg-ink-soft px-3.5 py-2 text-xs tracking-normal text-sand-50 normal-case focus:border-brass focus:outline-none"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -103,10 +103,10 @@ export function ProductFilters({
       </div>
 
       <div className={cx("lg:block", open ? "block" : "hidden")}>
-        <div className="flex flex-wrap items-start gap-x-10 gap-y-6 py-6">
+        <div className="flex flex-wrap items-start gap-x-14 gap-y-9 py-10">
           {vendors.length > 1 && (
             <fieldset>
-              <legend className="eyebrow mb-3">Brand</legend>
+              <legend className="eyebrow mb-4">Brand</legend>
               <div className="flex flex-wrap gap-2">
                 {vendors.map((v) => {
                   const on = selectedBrands.includes(v);
@@ -117,10 +117,10 @@ export function ProductFilters({
                       onClick={() => toggle("brand", v)}
                       aria-pressed={on}
                       className={cx(
-                        "border px-3.5 py-1.5 text-xs tracking-wider uppercase transition-colors",
+                        "border px-4 py-2 text-[11px] tracking-[0.14em] uppercase transition-colors",
                         on
-                          ? "border-sand-50 bg-sand-50 text-ink"
-                          : "border-white/15 text-sand-50 hover:border-sand-50",
+                          ? "border-sand-50 bg-sand-50 text-olive"
+                          : "border-sand-50/20 text-sand-200 hover:border-sand-50 hover:text-sand-50",
                       )}
                     >
                       {titleCase(v)}
@@ -142,7 +142,7 @@ export function ProductFilters({
 
             return (
               <fieldset key={facet.param}>
-                <legend className="eyebrow mb-3">{facet.label}</legend>
+                <legend className="eyebrow mb-4">{facet.label}</legend>
                 <div className="flex flex-wrap gap-2">
                   {values.map((v) => {
                     const on = selected.includes(v.toLowerCase());
@@ -153,10 +153,10 @@ export function ProductFilters({
                         onClick={() => toggle(facet.param, v)}
                         aria-pressed={on}
                         className={cx(
-                          "border px-3.5 py-1.5 text-xs tracking-wider uppercase transition-colors",
+                          "border px-4 py-2 text-[11px] tracking-[0.14em] uppercase transition-colors",
                           on
-                            ? "border-sand-50 bg-sand-50 text-ink"
-                            : "border-white/15 text-sand-50 hover:border-sand-50",
+                            ? "border-sand-50 bg-sand-50 text-olive"
+                            : "border-sand-50/20 text-sand-200 hover:border-sand-50 hover:text-sand-50",
                         )}
                       >
                         {v}
@@ -169,7 +169,7 @@ export function ProductFilters({
           })}
 
           <fieldset>
-            <legend className="eyebrow mb-3">Price</legend>
+            <legend className="eyebrow mb-4">Price</legend>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -178,7 +178,7 @@ export function ProductFilters({
                 placeholder="Min"
                 defaultValue={params.get("min") ?? ""}
                 onBlur={(e) => setParam("min", e.target.value)}
-                className="w-24 border border-white/15 bg-ink px-3 py-1.5 text-sm text-sand-50 focus:border-sand-50 focus:outline-none"
+                className="w-24 border border-sand-50/20 bg-ink-soft px-3.5 py-2 text-sm text-sand-50 focus:border-brass focus:outline-none"
               />
               <span aria-hidden className="text-muted-light">
                 –
@@ -190,22 +190,22 @@ export function ProductFilters({
                 placeholder="Max"
                 defaultValue={params.get("max") ?? ""}
                 onBlur={(e) => setParam("max", e.target.value)}
-                className="w-24 border border-white/15 bg-ink px-3 py-1.5 text-sm text-sand-50 focus:border-sand-50 focus:outline-none"
+                className="w-24 border border-sand-50/20 bg-ink-soft px-3.5 py-2 text-sm text-sand-50 focus:border-brass focus:outline-none"
               />
             </div>
           </fieldset>
 
           <fieldset>
-            <legend className="eyebrow mb-3">Availability</legend>
+            <legend className="eyebrow mb-4">Availability</legend>
             <button
               type="button"
               onClick={() => setParam("stock", inStock ? "" : "in")}
               aria-pressed={inStock}
               className={cx(
-                "border px-3.5 py-1.5 text-xs tracking-wider uppercase transition-colors",
+                "border px-4 py-2 text-[11px] tracking-[0.14em] uppercase transition-colors",
                 inStock
-                  ? "border-sand-50 bg-sand-50 text-ink"
-                  : "border-white/15 text-sand-50 hover:border-sand-50",
+                  ? "border-sand-50 bg-sand-50 text-olive"
+                  : "border-sand-50/20 text-sand-200 hover:border-sand-50 hover:text-sand-50",
               )}
             >
               In stock only
@@ -245,7 +245,7 @@ export function LoadMore({ shown, hasMore }: { shown: number; hasMore: boolean }
   };
 
   return (
-    <div className="mt-14 text-center">
+    <div className="mt-20 text-center">
       <button
         type="button"
         onClick={more}

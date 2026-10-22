@@ -41,7 +41,7 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
     const products = await getProducts({ first: 12, sortKey: "BEST_SELLING" });
     return (
       <>
-        <p className="mb-8 text-xs tracking-[0.15em] text-muted-light uppercase">
+        <p className="mb-10 text-[11px] tracking-luxe text-muted-light uppercase">
           Popular right now
         </p>
         <ProductGrid products={products} />
@@ -53,14 +53,14 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
 
   return (
     <>
-      <p className="mb-8 text-xs tracking-[0.15em] text-muted-light uppercase">
+      <p className="mb-10 text-[11px] tracking-luxe text-muted-light uppercase">
         {products.length} {products.length === 1 ? "result" : "results"} for
         &ldquo;{query}&rdquo;
       </p>
       {products.length ? (
         <ProductGrid products={products} />
       ) : (
-        <p className="py-16 text-center text-sm text-muted-light">
+        <p className="py-28 text-center text-sm text-muted-light">
           Nothing matched that. Try a brand name such as Titan, or a style like
           &ldquo;leather&rdquo;.
         </p>
@@ -71,16 +71,17 @@ async function Results({ searchParams }: { searchParams: SearchParams }) {
 
 export default function SearchPage({ searchParams }: PageProps<"/search">) {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-3xl font-light text-sand-50 sm:text-4xl">
+    <div className="shell py-16 md:py-24">
+      <p className="eyebrow">The catalogue</p>
+      <h1 className="mt-5 font-display text-[2.5rem] leading-tight font-light text-sand-50 sm:text-5xl">
         Search
       </h1>
 
-      <form action="/search" className="mt-8 max-w-xl">
+      <form action="/search" className="mt-12 max-w-xl">
         <label htmlFor="q" className="sr-only">
           Search watches
         </label>
-        <div className="flex border border-white/15 bg-ink">
+        <div className="flex border border-sand-50/20 bg-ink-soft">
           <Suspense
             fallback={
               <input
@@ -96,14 +97,14 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
           </Suspense>
           <button
             type="submit"
-            className="bg-ink px-6 text-xs tracking-[0.15em] text-sand-50 uppercase transition-colors hover:bg-brass-dark"
+            className="px-7 text-[11px] tracking-luxe text-sand-50 uppercase transition-colors hover:bg-brass-dark"
           >
             Search
           </button>
         </div>
       </form>
 
-      <div className="mt-14">
+      <div className="mt-20">
         <Suspense fallback={<GridSkeleton count={8} />}>
           <Results searchParams={searchParams} />
         </Suspense>

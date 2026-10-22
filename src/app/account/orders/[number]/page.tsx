@@ -5,11 +5,12 @@ import { Suspense } from "react";
 import { PrintButton } from "@/components/account/print-button";
 import { readCustomer } from "@/lib/auth";
 import type { CustomerAddress, CustomerOrder } from "@/lib/shopify/customer";
+import { getUploadedInvoice } from "@/lib/shopify/order-invoice";
 import { site } from "@/lib/site";
 import { formatMoney } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Invoice",
+  title: "Order",
   robots: { index: false, follow: false },
 };
 
@@ -63,15 +64,39 @@ function Address({
   );
 }
 
-function Invoice({ order }: { order: CustomerOrder }) {
+/**
+ * The invoice is a document the showroom issues and uploads, so until one
+ * exists this says so rather than offering a download that 404s. Streamed in
+ * its own boundary: it costs an Admin API round trip the summary does not
+ * need to wait on.
+ */
+async function InvoiceLink({ orderNumber }: { orderNumber: string }) {
+  const invoice = await getUploadedInvoice(orderNumber);
+
+  if (!invoice) {
+    return (
+      <p className="text-xs leading-relaxed text-muted">
+        Your invoice will appear here once the showroom has issued it.
+      </p>
+    );
+  }
+
+  return (
+    <a href={`/account/orders/${orderNumber}/invoice.pdf`} className="btn btn-primary">
+      Download invoice
+    </a>
+  );
+}
+
+function OrderSummary({ order }: { order: CustomerOrder }) {
   /* Shopify gives the tax total but Indian pricing is tax-inclusive, so the
      tax is shown as "included in the above" rather than added to the sum. */
   const tax = order.totalTax;
   const taxIncluded = Number(tax?.amount ?? 0) > 0;
 
   return (
-    <article className="mx-auto max-w-3xl bg-ink p-8 sm:p-12 print:max-w-none print:p-0">
-      <header className="flex flex-wrap items-start justify-between gap-6 border-b border-white/10 pb-8">
+    <article className="mx-auto max-w-3xl border border-sand-50/10 bg-olive p-8 sm:p-12 print:max-w-none print:border-0 print:p-0">
+      <header className="flex flex-wrap items-start justify-between gap-6 border-b border-sand-50/10 pb-8">
         <div>
           <p className="font-display text-2xl leading-tight font-light text-sand-50">
             {site.name}
@@ -79,7 +104,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
           <p className="mt-1 text-xs text-muted-light">{site.url}</p>
         </div>
         <div className="text-right">
-          <p className="eyebrow">Invoice</p>
+          <p className="eyebrow">Order</p>
           <p className="mt-2 font-display text-xl text-sand-50">
             {order.name || `#${order.orderNumber}`}
           </p>
@@ -89,7 +114,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
         </div>
       </header>
 
-      <div className="grid gap-8 border-b border-white/10 py-8 sm:grid-cols-2">
+      <div className="grid gap-8 border-b border-sand-50/10 py-8 sm:grid-cols-2">
         <Address
           title="Billed to"
           address={order.billingAddress}
@@ -100,7 +125,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
 
       <table className="mt-8 w-full text-sm">
         <thead>
-          <tr className="border-b border-white/10 text-left">
+          <tr className="border-b border-sand-50/10 text-left">
             <th className="pb-3 font-normal text-muted-light">Item</th>
             <th className="pb-3 text-center font-normal text-muted-light">Qty</th>
             <th className="pb-3 text-right font-normal text-muted-light">Amount</th>
@@ -108,7 +133,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
         </thead>
         <tbody>
           {order.lineItems.map((item, i) => (
-            <tr key={i} className="border-b border-sand-200 align-top">
+            <tr key={i} className="border-b border-sand-50/10 align-top">
               <td className="py-4 pr-4 text-sand-50">
                 {item.title}
                 {item.variant?.title &&
@@ -149,7 +174,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
             </dd>
           </div>
         )}
-        <div className="flex justify-between border-t border-white/10 pt-3">
+        <div className="flex justify-between border-t border-sand-50/10 pt-3">
           <dt className="font-medium text-sand-50">Total</dt>
           <dd className="text-lg font-medium text-sand-50">
             {formatMoney(order.currentTotalPrice)}
@@ -163,7 +188,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
         )}
       </dl>
 
-      <footer className="mt-10 border-t border-white/10 pt-6 text-xs leading-relaxed text-muted-light">
+      <footer className="mt-10 border-t border-sand-50/10 pt-6 text-xs leading-relaxed text-muted-light">
         <p>
           Payment status:{" "}
           <span className="text-sand-50">
@@ -171,8 +196,8 @@ function Invoice({ order }: { order: CustomerOrder }) {
           </span>
         </p>
         <p className="mt-2">
-          Thank you for shopping with {site.name}. For any query about this
-          order, reply to your confirmation email quoting{" "}
+          This is a summary of your order, not a tax invoice. For any query
+          about it, reply to your confirmation email quoting{" "}
           {order.name || `#${order.orderNumber}`}.
         </p>
       </footer>
@@ -180,7 +205,7 @@ function Invoice({ order }: { order: CustomerOrder }) {
   );
 }
 
-async function InvoicePage({
+async function OrderView({
   params,
 }: {
   params: PageProps<"/account/orders/[number]">["params"];
@@ -193,7 +218,7 @@ async function InvoicePage({
   }
 
   /* Matched against the signed-in customer's own orders, so one customer
-     cannot read another's invoice by guessing a number. */
+     cannot read another's order by guessing a number. */
   const order = customer.orders.find(
     (o) => String(o.orderNumber) === number,
   );
@@ -209,22 +234,24 @@ async function InvoicePage({
         >
           Back to account
         </Link>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-6">
           <PrintButton />
-          <a href={`/account/orders/${number}/invoice.pdf`} className="btn">
-            Download PDF
-          </a>
+          <Suspense
+            fallback={<div className="h-12 w-44 animate-pulse bg-charcoal" />}
+          >
+            <InvoiceLink orderNumber={number} />
+          </Suspense>
         </div>
       </div>
 
       <div className="px-4 py-8 sm:px-0 print:p-0">
-        <Invoice order={order} />
+        <OrderSummary order={order} />
       </div>
     </>
   );
 }
 
-export default function OrderInvoicePage({
+export default function OrderPage({
   params,
 }: PageProps<"/account/orders/[number]">) {
   return (
@@ -233,7 +260,7 @@ export default function OrderInvoicePage({
         <div className="mx-auto my-10 h-96 max-w-3xl animate-pulse bg-charcoal" />
       }
     >
-      <InvoicePage params={params} />
+      <OrderView params={params} />
     </Suspense>
   );
 }

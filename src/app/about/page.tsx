@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHeader } from "@/components/page-header";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -11,21 +12,14 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <header className="bg-ink py-20 text-center text-sand-100">
-        <div className="mx-auto max-w-2xl px-4">
-          <p className="eyebrow text-brass-light">Since the beginning</p>
-          <h1 className="mt-4 font-display text-4xl font-light text-sand-50 sm:text-5xl">
-            Our story
-          </h1>
-        </div>
-      </header>
+      <PageHeader eyebrow="Since the beginning" title="Our story" />
 
-      <article className="mx-auto max-w-2xl px-4 py-20 sm:px-6">
-        <p className="font-display text-2xl leading-relaxed font-light text-sand-50">
+      <article className="shell-prose section">
+        <p className="font-display text-[1.75rem] leading-[1.6] font-light text-sand-50">
           {site.heritage}
         </p>
 
-        <div aria-hidden className="rule my-10" />
+        <div aria-hidden className="rule my-14" />
 
         <div className="rte text-[15px]">
           <p>
@@ -56,7 +50,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="mt-12 flex flex-wrap gap-3">
+        <div className="mt-16 flex flex-wrap gap-4">
           <Link href="/collections/all" className="btn btn-primary">
             Explore the collection
           </Link>

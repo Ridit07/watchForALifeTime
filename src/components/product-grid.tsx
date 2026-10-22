@@ -10,14 +10,14 @@ export function ProductGrid({
 }) {
   if (!products.length) {
     return (
-      <p className="py-20 text-center text-sm text-muted-light">
+      <p className="py-28 text-center text-sm text-muted-light">
         No pieces here just yet.
       </p>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-x-6 gap-y-16 md:grid-cols-3 md:gap-x-10 md:gap-y-20 xl:grid-cols-4">
       {products.map((p, i) => (
         <ProductCard key={p.id} product={p} priority={i < priorityCount} />
       ))}

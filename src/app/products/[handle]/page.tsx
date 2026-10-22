@@ -60,7 +60,7 @@ async function RelatedProducts({ params }: { params: Params }) {
   if (!related.length) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6">
+    <section className="shell section">
       <SectionHeading
         eyebrow="You may also like"
         title="More from the collection"
@@ -135,17 +135,17 @@ async function ProductDetail({ params }: { params: Params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+      <div className="shell pt-10">
         <nav aria-label="Breadcrumb" className="text-xs text-muted-light">
-          <ol className="flex flex-wrap items-center gap-2">
+          <ol className="flex flex-wrap items-center gap-2.5 text-[11px] tracking-wider uppercase">
             <li>
-              <Link href="/" className="hover:text-brass-dark">
+              <Link href="/" className="hover:text-brass-light">
                 Home
               </Link>
             </li>
             <li aria-hidden>/</li>
             <li>
-              <Link href="/collections/all" className="hover:text-brass-dark">
+              <Link href="/collections/all" className="hover:text-brass-light">
                 Watches
               </Link>
             </li>
@@ -155,57 +155,57 @@ async function ProductDetail({ params }: { params: Params }) {
         </nav>
       </div>
 
-      <article className="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-16">
+      <article className="shell grid gap-14 py-14 md:py-20 lg:grid-cols-2 lg:gap-24">
         <ProductGallery images={product.images} title={product.title} />
 
-        <div className="lg:py-4">
+        <div className="lg:pt-2">
           {product.vendor && (
             <p className="eyebrow">{titleCase(product.vendor)}</p>
           )}
-          <h1 className="mt-3 font-display text-3xl leading-tight font-light text-sand-50 sm:text-[2.5rem]">
+          <h1 className="mt-5 font-display text-[2.25rem] leading-tight font-light text-sand-50 sm:text-[3rem]">
             {product.title}
           </h1>
 
-          <div className="mt-5 flex flex-wrap items-baseline gap-3">
-            <p className="text-2xl text-sand-50">{formatMoney(price)}</p>
+          <div className="mt-8 flex flex-wrap items-baseline gap-4">
+            <p className="text-[1.75rem] font-light text-sand-50">{formatMoney(price)}</p>
             {off !== null && (
               <>
                 <p className="text-base text-muted-light line-through">
                   {formatMoney(compareAt)}
                 </p>
-                <span className="bg-brass-dark px-2 py-1 text-[10px] tracking-widest text-sand-50 uppercase">
+                <span className="bg-brass-dark px-2.5 py-1 text-[10px] tracking-[0.2em] text-sand-50 uppercase">
                   {off}% off
                 </span>
               </>
             )}
           </div>
-          <p className="mt-1.5 text-xs text-muted-light">Inclusive of all taxes</p>
+          <p className="mt-3 text-xs text-muted">Inclusive of all taxes</p>
 
           {product.availableForSale ? (
             inStock !== null && inStock <= 3 ? (
-              <p className="mt-4 text-sm text-brass-dark">
+              <p className="mt-6 text-sm text-brass">
                 Only {inStock} {inStock === 1 ? "piece" : "pieces"} left
               </p>
             ) : (
-              <p className="mt-4 text-sm text-muted-light">In stock</p>
+              <p className="mt-6 text-sm text-muted-light">In stock</p>
             )
           ) : (
-            <p className="mt-4 text-sm text-muted-light">
+            <p className="mt-6 text-sm text-muted-light">
               Currently unavailable — contact the showroom for availability.
             </p>
           )}
 
           <Suspense
             fallback={
-              <div className="mt-8 h-12 w-full animate-pulse bg-charcoal" />
+              <div className="mt-10 h-14 w-full animate-pulse bg-charcoal" />
             }
           >
             <AddToCartSection product={product} />
           </Suspense>
 
           {product.descriptionHtml && (
-            <div className="mt-10 border-t border-white/10 pt-8">
-              <h2 className="eyebrow mb-4">Details</h2>
+            <div className="mt-14 border-t border-sand-50/10 pt-10">
+              <h2 className="eyebrow mb-6">Details</h2>
               <div
                 className="rte text-[15px]"
                 dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
@@ -214,11 +214,11 @@ async function ProductDetail({ params }: { params: Params }) {
           )}
 
           {specs.length > 0 && (
-            <div className="mt-10 border-t border-white/10 pt-8">
-              <h2 className="eyebrow mb-4">Specification</h2>
-              <dl className="divide-y divide-white/10 text-sm">
+            <div className="mt-14 border-t border-sand-50/10 pt-10">
+              <h2 className="eyebrow mb-6">Specification</h2>
+              <dl className="divide-y divide-sand-50/10 text-sm">
                 {specs.map((s) => (
-                  <div key={s.key} className="flex justify-between gap-6 py-3">
+                  <div key={s.key} className="flex justify-between gap-8 py-4">
                     <dt className="text-muted-light">{s.label}</dt>
                     <dd className="text-right text-sand-50">{s.value}</dd>
                   </div>
@@ -227,7 +227,7 @@ async function ProductDetail({ params }: { params: Params }) {
             </div>
           )}
 
-          <ul className="mt-10 grid gap-4 border-t border-white/10 pt-8 sm:grid-cols-2">
+          <ul className="mt-14 grid gap-8 border-t border-sand-50/10 pt-10 sm:grid-cols-2">
             {assurances.map((a) => (
               <li key={a.title}>
                 <p className="text-[13px] font-medium text-sand-50">{a.title}</p>

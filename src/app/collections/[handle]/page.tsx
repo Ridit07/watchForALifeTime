@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ProductGrid } from "@/components/product-grid";
 import { ProductFilters, LoadMore } from "@/components/product-filters";
+import { PageHeader } from "@/components/page-header";
 import { CollectionSkeleton } from "@/components/skeletons";
 import { getCollection, getCollections, getProducts, getVendors } from "@/lib/shopify";
 import {
@@ -93,21 +94,9 @@ async function CollectionView({
 
   return (
     <>
-      <header className="bg-ink py-16 text-center text-sand-100">
-        <div className="mx-auto max-w-2xl px-4">
-          <p className="eyebrow text-brass-light">Collection</p>
-          <h1 className="mt-3 font-display text-4xl font-light text-sand-50 sm:text-5xl">
-            {title}
-          </h1>
-          {description && (
-            <p className="mt-5 text-[15px] leading-relaxed text-muted-light">
-              {description}
-            </p>
-          )}
-        </div>
-      </header>
+      <PageHeader eyebrow="Collection" title={title} intro={description} />
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <section className="shell py-14 md:py-20">
         <ProductFilters
           vendors={vendors}
           facetOptions={options}
@@ -115,7 +104,7 @@ async function CollectionView({
           active={filters.active}
         />
 
-        <div className="pt-4">
+        <div className="pt-10">
           <ProductGrid products={products} />
         </div>
 

@@ -7,11 +7,14 @@ const VERSION = process.env.SHOPIFY_API_VERSION || "2026-10";
 const ENDPOINT = `https://${DOMAIN}/admin/api/${VERSION}/graphql.json`;
 
 /**
- * Admin API request. Unlike the Storefront client this one never throws:
- * the only caller is cart persistence, which is a convenience on top of a
- * cart that already works. A failed write must not break adding to the bag.
+ * Admin API request. Unlike the Storefront client this one never throws, so
+ * a dead token degrades rather than breaks: cart persistence is a convenience
+ * on top of a cart that already works, and a missing invoice simply reads as
+ * "not issued yet".
  *
- * Returns null when the credentials are missing or Shopify refuses.
+ * That silence is the hazard — a revoked token and an empty result look
+ * identical to callers — so every failure is logged server-side even though
+ * the return value is the same null.
  */
 export async function adminFetch<T>({
   query,
@@ -20,7 +23,12 @@ export async function adminFetch<T>({
   query: string;
   variables?: Record<string, unknown>;
 }): Promise<T | null> {
-  if (!DOMAIN || !TOKEN) return null;
+  if (!DOMAIN || !TOKEN) {
+    console.warn(
+      "[shopify/admin] SHOPIFY_STORE_DOMAIN or SHOPIFY_ADMIN_ACCESS_TOKEN is not set",
+    );
+    return null;
+  }
 
   try {
     const res = await fetch(ENDPOINT, {
@@ -33,7 +41,10 @@ export async function adminFetch<T>({
       cache: "no-store",
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[shopify/admin] HTTP ${res.status} from the Admin API`);
+      return null;
+    }
 
     const json = (await res.json()) as {
       data?: T;
@@ -42,10 +53,14 @@ export async function adminFetch<T>({
 
     // Admin returns `errors` as an array of objects, or a bare string for
     // auth failures. Either way there is no usable data.
-    if (json.errors) return null;
+    if (json.errors) {
+      console.warn("[shopify/admin] rejected:", JSON.stringify(json.errors));
+      return null;
+    }
 
     return json.data ?? null;
-  } catch {
+  } catch (error) {
+    console.warn("[shopify/admin] request failed:", error);
     return null;
   }
 }

@@ -30,20 +30,20 @@ export function CartLineItem({ line }: { line: CartLine }) {
   return (
     <li
       className={
-        "flex gap-5 py-7 transition-opacity " + (pending ? "opacity-50" : "")
+        "flex gap-7 py-9 transition-opacity " + (pending ? "opacity-50" : "")
       }
     >
       <Link
         href={`/products/${merchandise.product.handle}`}
-        className="relative h-28 w-24 shrink-0 overflow-hidden bg-tile"
+        className="relative h-32 w-28 shrink-0 overflow-hidden bg-tile"
       >
         {merchandise.image && (
           <Image
             src={merchandise.image.url}
             alt={merchandise.image.altText || merchandise.product.title}
             fill
-            sizes="96px"
-            className="object-contain p-2"
+            sizes="112px"
+            className="object-contain"
           />
         )}
       </Link>
@@ -55,7 +55,7 @@ export function CartLineItem({ line }: { line: CartLine }) {
             <h3 className="mt-1 text-sm leading-snug text-sand-50">
               <Link
                 href={`/products/${merchandise.product.handle}`}
-                className="hover:text-brass-dark"
+                className="hover:text-brass-light"
               >
                 {merchandise.product.title}
               </Link>
@@ -84,7 +84,7 @@ export function CartLineItem({ line }: { line: CartLine }) {
         )}
 
         <div className="mt-auto flex items-center justify-between pt-4">
-          <div className="flex items-center border border-white/15">
+          <div className="flex items-center border border-sand-50/20">
             <button
               type="button"
               onClick={() => setQuantity(line.quantity - 1)}

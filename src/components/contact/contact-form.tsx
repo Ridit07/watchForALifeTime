@@ -16,7 +16,7 @@ export function ContactForm({ formId }: { formId: string }) {
 
   if (!formId) {
     return (
-      <p className="border border-white/10 bg-ink p-5 text-sm text-muted-light">
+      <p className="border border-sand-50/10 bg-olive p-6 text-sm text-muted-light">
         The contact form is not configured yet. Please email us directly in
         the meantime.
       </p>
@@ -58,7 +58,7 @@ export function ContactForm({ formId }: { formId: string }) {
     return (
       <div
         role="status"
-        className="border border-sand-50 bg-ink p-8 text-center"
+        className="border border-sand-50/20 bg-olive p-10 text-center"
       >
         <p className="font-display text-xl text-sand-50">Thank you — message sent</p>
         <p className="mt-2 text-sm leading-relaxed text-muted-light">
@@ -77,7 +77,7 @@ export function ContactForm({ formId }: { formId: string }) {
   }
 
   const field =
-    "mt-1.5 w-full border border-white/15 bg-ink px-3.5 py-2.5 text-sm text-sand-50 transition-colors focus:border-sand-50 focus:outline-none";
+    "mt-2 w-full border border-sand-50/20 bg-ink-soft px-4 py-3 text-sm text-sand-50 transition-colors focus:border-brass focus:outline-none";
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">

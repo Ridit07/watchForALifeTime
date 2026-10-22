@@ -34,7 +34,7 @@ function OrderCard({ order }: { order: CustomerOrder }) {
   });
 
   return (
-    <li className="bg-ink p-6">
+    <li className="border border-sand-50/10 bg-olive p-7">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="font-display text-lg text-sand-50">
@@ -46,7 +46,7 @@ function OrderCard({ order }: { order: CustomerOrder }) {
           <p className="text-sm font-medium text-sand-50">
             {formatMoney(order.currentTotalPrice)}
           </p>
-          <p className="mt-1 text-[11px] tracking-[0.15em] text-brass-dark uppercase">
+          <p className="mt-1 text-[11px] tracking-[0.15em] text-brass uppercase">
             {statusLabel(order)}
           </p>
         </div>
@@ -132,7 +132,7 @@ async function AccountContents() {
               ))}
             </ul>
           ) : (
-            <div className="bg-ink p-10 text-center">
+            <div className="border border-sand-50/10 bg-olive p-12 text-center">
               <p className="text-sm text-muted-light">
                 You have not placed an order yet.
               </p>
@@ -146,7 +146,7 @@ async function AccountContents() {
         <aside>
           <h2 className="eyebrow mb-5">Default address</h2>
           {address ? (
-            <address className="bg-ink p-6 text-sm leading-relaxed text-muted-light not-italic">
+            <address className="border border-sand-50/10 bg-olive p-7 text-sm leading-relaxed text-muted-light not-italic">
               {[address.firstName, address.lastName].filter(Boolean).join(" ") && (
                 <span className="block text-sand-50">
                   {[address.firstName, address.lastName]
@@ -167,7 +167,7 @@ async function AccountContents() {
               )}
             </address>
           ) : (
-            <p className="bg-ink p-6 text-sm text-muted-light">
+            <p className="border border-sand-50/10 bg-olive p-7 text-sm text-muted-light">
               No address saved yet. You can add one during checkout.
             </p>
           )}
@@ -179,7 +179,7 @@ async function AccountContents() {
 
 export default function AccountPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+    <div className="shell py-16 md:py-24">
       <Suspense
         fallback={
           <div className="animate-pulse space-y-6">

@@ -6,24 +6,38 @@ export function SectionHeading({
   title,
   href,
   linkLabel = "View all",
+  centered = false,
 }: {
   eyebrow?: string;
   title: string;
   href?: string;
   linkLabel?: string;
+  centered?: boolean;
 }) {
+  if (centered) {
+    return (
+      <div className="mb-16 text-center">
+        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+        <h2 className="mt-5 font-display text-[2.25rem] leading-tight font-light text-sand-50 sm:text-5xl">
+          {title}
+        </h2>
+        <div aria-hidden className="rule mx-auto mt-9 w-24" />
+      </div>
+    );
+  }
+
   return (
-    <div className="mb-10 flex items-end justify-between gap-6">
+    <div className="mb-14 flex items-end justify-between gap-8 border-b border-sand-50/10 pb-8">
       <div>
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h2 className="mt-2 font-display text-3xl font-light text-sand-50 sm:text-4xl">
+        <h2 className="mt-5 font-display text-[2.25rem] leading-tight font-light text-sand-50 sm:text-5xl">
           {title}
         </h2>
       </div>
       {href && (
         <Link
           href={href}
-          className="group hidden shrink-0 items-center gap-2 text-xs tracking-[0.15em] text-muted-light uppercase transition-colors hover:text-brass-dark sm:flex"
+          className="group hidden shrink-0 items-center gap-2.5 pb-2 text-[11px] tracking-luxe text-muted-light uppercase transition-colors hover:text-brass-light sm:flex"
         >
           {linkLabel}
           <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />

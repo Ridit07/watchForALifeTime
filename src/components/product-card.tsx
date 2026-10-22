@@ -101,7 +101,7 @@ export function ProductCard({
                   priority={i === 0 && priority}
                   sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
                   className={cx(
-                    "object-contain p-5 transition-opacity duration-500 ease-out",
+                    "object-contain transition-opacity duration-500 ease-out",
                     i === frame ? "opacity-100" : "opacity-0",
                   )}
                 />
@@ -138,30 +138,30 @@ export function ProductCard({
         )}
 
         {soldOut && (
-          <span className="absolute left-0 top-4 bg-ink px-3 py-1.5 text-[10px] tracking-[0.15em] text-sand-100 uppercase">
+          <span className="absolute left-0 top-5 bg-ink px-3.5 py-1.5 text-[10px] tracking-[0.2em] text-sand-100 uppercase">
             Sold out
           </span>
         )}
         {!soldOut && off !== null && (
-          <span className="absolute left-0 top-4 bg-brass-dark px-3 py-1.5 text-[10px] tracking-[0.15em] text-sand-50 uppercase">
+          <span className="absolute left-0 top-5 bg-brass-dark px-3.5 py-1.5 text-[10px] tracking-[0.2em] text-sand-50 uppercase">
             {off}% off
           </span>
         )}
         {lastOne && off === null && (
-          <span className="absolute left-0 top-4 bg-sand-50/95 px-3 py-1.5 text-[10px] tracking-[0.15em] text-ink uppercase">
+          <span className="absolute left-0 top-5 bg-sand-50/95 px-3.5 py-1.5 text-[10px] tracking-[0.2em] text-olive uppercase">
             Last piece
           </span>
         )}
       </div>
 
-      <div className="pt-4">
+      <div className="pt-6">
         {product.vendor && (
           <p className="eyebrow">{titleCase(product.vendor)}</p>
         )}
-        <h3 className="mt-1.5 line-clamp-2 font-display text-[17px] leading-snug text-sand-50 transition-colors group-hover:text-brass-light">
+        <h3 className="mt-3 line-clamp-2 font-display text-[19px] leading-snug font-light text-sand-50 transition-colors group-hover:text-brass-light">
           {product.title}
         </h3>
-        <p className="mt-2 flex items-baseline gap-2 text-sm">
+        <p className="mt-3 flex items-baseline gap-2.5 text-sm">
           <span className="font-medium text-sand-50">
             {hasRange && "From "}
             {formatMoney(price)}

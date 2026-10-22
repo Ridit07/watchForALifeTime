@@ -4,6 +4,7 @@ import { cacheLife } from "next/cache";
 import { getCollections, getPolicies } from "@/lib/shopify";
 import { shippingLine, site } from "@/lib/site";
 import { titleCase } from "@/lib/utils";
+import { Logo } from "./logo";
 
 /* Shopify returns null for a policy that has not been written yet, so the
    footer only links the ones that actually exist — an unwritten policy would
@@ -45,10 +46,10 @@ async function FooterLinks() {
   return (
     <>
       <div>
-            <h2 className="text-[11px] font-medium tracking-[0.2em] text-brass-light uppercase">
+            <h2 className="text-[10px] font-medium tracking-[0.28em] text-brass-light uppercase">
               Shop
             </h2>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-7 space-y-4 text-sm">
               <li>
                 <Link href="/collections/all" className="footer-link">
                   All Watches
@@ -78,10 +79,10 @@ async function FooterLinks() {
           </div>
 
           <div>
-            <h2 className="text-[11px] font-medium tracking-[0.2em] text-brass-light uppercase">
+            <h2 className="text-[10px] font-medium tracking-[0.28em] text-brass-light uppercase">
               Support
             </h2>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-7 space-y-4 text-sm">
               <li>
                 <Link href="/about" className="footer-link">
                   Our Story
@@ -107,15 +108,15 @@ async function FooterLinks() {
 
 export function Footer() {
   return (
-    <footer className="mt-24 bg-ink text-sand-200 print:hidden">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-        <div className="grid gap-12 md:grid-cols-4">
+    <footer className="border-t border-sand-50/10 bg-ink text-sand-200 print:hidden">
+      <div className="shell py-20 md:py-28">
+        <div className="grid gap-16 md:grid-cols-4 md:gap-12">
           <div className="md:col-span-2">
-            <p className="font-display text-2xl text-sand-50">{site.name}</p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-light">
+            <Logo height={80} className="h-20 w-auto" />
+            <p className="mt-9 max-w-sm text-sm leading-[1.9] text-muted-light">
               {site.heritage}
             </p>
-            <p className="mt-5 text-xs leading-relaxed text-brass-light">
+            <p className="mt-7 text-xs leading-relaxed text-brass-light">
               {shippingLine}
             </p>
           </div>
@@ -123,8 +124,8 @@ export function Footer() {
           <Suspense
             fallback={
               <>
-                <div className="h-40 animate-pulse bg-white/5" />
-                <div className="h-40 animate-pulse bg-white/5" />
+                <div className="h-40 animate-pulse bg-sand-50/5" />
+                <div className="h-40 animate-pulse bg-sand-50/5" />
               </>
             }
           >
@@ -132,7 +133,7 @@ export function Footer() {
           </Suspense>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-muted-light sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-20 flex flex-col gap-3 border-t border-sand-50/10 pt-10 text-[11px] tracking-wider text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             © <CopyrightYear /> {site.name}. All rights reserved.
           </p>
